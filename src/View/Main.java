@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.swing.event.ChangeListener;
+
 public class Main extends Application {
 
     @Override
@@ -13,6 +15,8 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("MyView.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 1000, 800));
+
+
         primaryStage.show();
     }
 

@@ -1,24 +1,25 @@
 package View;
 
 import javafx.event.ActionEvent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+
 
 public class MyViewController implements IView{
     public MazeGenerator generator;
     public TextField textField_mazeRows;
     public TextField textField_mazeColumns;
     public MazeDisplayer mazeDisplayer;
+    public BorderPane Border;
 
     public void generateMaze(ActionEvent actionEvent) {
         if(generator == null)
             generator = new MazeGenerator();
-
         int rows = Integer.valueOf(textField_mazeRows.getText());
         int cols = Integer.valueOf(textField_mazeColumns.getText());
-
         int[][] maze = generator.generateRandomMaze(rows, cols);
-
         mazeDisplayer.drawMaze(maze);
     }
 
@@ -28,5 +29,9 @@ public class MyViewController implements IView{
         alert.show();
     }
 
+    public void updateMaze(ActionEvent actionEvent) {
+
+        mazeDisplayer.updateMaze(Border.getHeight(),Border.getWidth());
+    }
 
 }

@@ -1,13 +1,41 @@
 package View;
+import javafx.beans.property.StringProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class MazeDisplayer extends Canvas {
     private int[][] maze;
+    StringProperty WallImageFile;
+    StringProperty CharacterImageFile;
+
     public void drawMaze(int[][] maze) {
         this.maze = maze;
         draw();
+    }
+
+    public String getWallImageFile() {
+        return WallImageFile.get();
+    }
+
+    public void setWallImageFile(String wallImageFile) {
+        this.WallImageFile.set(wallImageFile);
+    }
+
+    public String getCharacterImageFile() {
+        return CharacterImageFile.get();
+    }
+
+    public void setCharacterImageFile(String characterImageFile) {
+        this.CharacterImageFile.set(characterImageFile);
+    }
+
+    public void updateMaze(double height, double width) {
+        this.setHeight(height);
+        this.setWidth(width);
+        if(maze != null){
+            draw();
+        }
     }
 
     private void draw() {
