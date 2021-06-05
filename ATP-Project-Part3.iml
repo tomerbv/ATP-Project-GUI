@@ -12,7 +12,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files/advanced programming project/ATP-Project/out/artifacts/ATP_Project_PartB_jar/ATP-Project-PartB.jar!/" />
+          <root url="jar://$MODULE_DIR$/resources/ATPProjectJAR.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
