@@ -101,6 +101,23 @@ public class MyModel extends Observable implements IModel{
                 if (characterColPos < maze.getColumns() - 1 && maze.GetPositionVal(getPlayerRow() , getPlayerCol() + 1) == 0)
                     movePlayer(characterRowPos, characterColPos + 1);
             }
+
+            case UPRIGHT -> {
+                if (characterRowPos > 0 && characterColPos < maze.getColumns() - 1 && maze.GetPositionVal(getPlayerRow() - 1, getPlayerCol() + 1) == 0 && (maze.GetPositionVal(getPlayerRow() - 1, getPlayerCol()) == 0 || maze.GetPositionVal(getPlayerRow() , getPlayerCol() + 1) == 0))
+                    movePlayer(characterRowPos - 1, characterColPos + 1);
+            }
+            case DOWNRIGHT -> {
+                if (characterRowPos < maze.getRows() - 1 && characterColPos < maze.getColumns() - 1 && maze.GetPositionVal(getPlayerRow() + 1, getPlayerCol() + 1) == 0 && (maze.GetPositionVal(getPlayerRow() + 1, getPlayerCol()) == 0 || maze.GetPositionVal(getPlayerRow() , getPlayerCol() + 1) == 0))
+                    movePlayer(characterRowPos + 1, characterColPos + 1);
+            }
+            case UPLEFT -> {
+                if (characterRowPos > 0 && characterColPos > 0 && maze.GetPositionVal(getPlayerRow() - 1 , getPlayerCol() - 1) == 0 && (maze.GetPositionVal(getPlayerRow() - 1, getPlayerCol()) == 0 || maze.GetPositionVal(getPlayerRow() , getPlayerCol() - 1) == 0))
+                    movePlayer(characterRowPos - 1, characterColPos - 1 );
+            }
+            case DOWNLEFT -> {
+                if (characterRowPos < maze.getRows() - 1 && characterColPos > 0 && maze.GetPositionVal(getPlayerRow() + 1 , getPlayerCol() - 1) == 0 && (maze.GetPositionVal(getPlayerRow() + 1, getPlayerCol()) == 0 || maze.GetPositionVal(getPlayerRow() , getPlayerCol() - 1) == 0))
+                    movePlayer(characterRowPos + 1, characterColPos - 1);
+            }
         }
 
     }
