@@ -229,21 +229,6 @@ public class MyViewController implements Observer, Initializable, IView{
             WindowEvent.consume();});
     }
 
-    public void listenToStageExits(Stage primaryStage) {
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            public void handle(WindowEvent windowEvent){
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Exit");
-                alert.setHeaderText("Are you sure?");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK)
-                    System.exit(0);
-                else
-                    windowEvent.consume();
-
-            }
-        });
-    }
 
     public void ExitButton(ActionEvent actionEvent) {
         Exit();
