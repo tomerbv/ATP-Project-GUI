@@ -17,6 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -38,6 +40,8 @@ public class MyViewController implements Observer, Initializable, IView{
     public Label playerCol;
     double WidthRatio = 820;
     double HeightRatio = 770;
+    Thread musicThread;
+    boolean stop;
 
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
@@ -266,5 +270,26 @@ public class MyViewController implements Observer, Initializable, IView{
 
 
     public void Rules(ActionEvent actionEvent) {
+    }
+
+    public void playAudio(ActionEvent actionEvent) {
+        stop = false;
+        musicThread = new Thread(()->{
+            try {
+                while(!stop) {
+                    //String musicFile = "resources/Sounds/theme.mp3";
+                    Media sound = new Media(this.getClass().getResource("/music/pokemon.mp3").toString());
+                    //Media sound = new Media(new File(musicFile).toURI().toString());
+                    MediaPlayer mediaPlayer= new MediaPlayer(sound);
+                    mediaPlayer.setVolume(0.2);
+                    mediaPlayer.play();
+
+                    int time = 219000;
+                    Thread.sleep(time);
+                }
+            }
+            catch (Exception e) {System.out.println(e); }
+        });
+        musicThread.start();
     }
 }
