@@ -1,15 +1,18 @@
 package View;
 
 import ViewModel.MyViewModel;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.stage.FileChooser;
 import java.io.File;
 import java.net.URL;
@@ -19,12 +22,13 @@ import java.util.ResourceBundle;
 
 public class MyViewController implements Observer, Initializable, IView{
     public MyViewModel viewModel;
-
+    public MazeDisplay mazeDisplay;
     public TextField textField_mazeRows;
     public TextField textField_mazeColumns;
-    public MazeDisplay mazeDisplay;
     public Label playerRow;
     public Label playerCol;
+    double WidthRatio = 820;
+    double HeightRatio = 770;
 
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
@@ -92,7 +96,19 @@ public class MyViewController implements Observer, Initializable, IView{
 
     public void mouseClicked(MouseEvent mouseEvent) {
         mazeDisplay.requestFocus();
+        viewModel.movePlayer(mouseEvent);
     }
+
+    public void Scrolled(ScrollEvent scrollEvent) {
+        if(scrollEvent.isControlDown()){
+            if(scrollEvent.getDeltaY() > 0)
+                this.mazeDisplay.zoomIn();
+            else
+                this.mazeDisplay.zoomOut();
+            AdjustSize();
+        }
+    }
+
 
     @Override
     public void update(Observable o, Object arg) {
@@ -116,5 +132,24 @@ public class MyViewController implements Observer, Initializable, IView{
     private void mazeGenerated() {
         mazeDisplay.drawMaze(viewModel.getMaze());
     }
+
+    public void AdjustSize(){
+        this.mazeDisplay.setWidth(WidthRatio);
+        this.mazeDisplay.setHeight(HeightRatio);
+        this.mazeDisplay.resize();
+    }
+
+    public void listenToScene(Scene scene) {
+        scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+            this.WidthRatio -= (oldVal.doubleValue() - newVal.doubleValue());
+            AdjustSize();
+        });
+
+        scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+            this.HeightRatio -= (oldVal.doubleValue() - newVal.doubleValue());
+            AdjustSize();
+        });
+    }
+
 
 }

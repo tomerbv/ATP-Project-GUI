@@ -16,11 +16,13 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MyView.fxml"));
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("The Maze");
-        primaryStage.setScene(new Scene(root, 1000, 800));
+        Scene scene = new Scene(root, 1000, 800);
+        primaryStage.setScene(scene);
         IModel model = new MyModel();
         MyViewModel viewModel = new MyViewModel(model);
         MyViewController myViewControl = fxmlLoader.getController();
         myViewControl.setViewModel(viewModel);
+        myViewControl.listenToScene(scene);
         primaryStage.show();
 
     }
