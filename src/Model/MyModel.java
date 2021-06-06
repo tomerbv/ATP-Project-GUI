@@ -33,8 +33,13 @@ public class MyModel extends Observable implements IModel{
         generateMazeServer.start();
         solveMazeServer.start();
         threadPool = Executors.newCachedThreadPool();
-
     }
+    
+    public void Exit(){
+        generateMazeServer.stop();
+        solveMazeServer.stop();
+        threadPool.shutdown();
+    } 
 
     @Override
     public void generateMaze(int rows, int cols) {
@@ -66,6 +71,11 @@ public class MyModel extends Observable implements IModel{
         }
     }
 
+    @Override
+    public void LoadMaze(Maze maze){
+        setMaze(maze);
+    }
+
     private void setMaze(Maze temp) {
         this.maze = temp;
         characterRowPos = maze.getStartPosition().getRowIndex();
@@ -74,7 +84,6 @@ public class MyModel extends Observable implements IModel{
         setChanged();
         notifyObservers("Generated");
         notifyObservers("Moved");
-        //notifyObservers("Solved");
     }
 
     @Override
@@ -174,6 +183,8 @@ public class MyModel extends Observable implements IModel{
     public Solution getSolution() {
         return solution;
     }
+
+
 
     @Override
     public void setObserver(Observer o) {

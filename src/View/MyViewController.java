@@ -1,31 +1,35 @@
 package View;
 
 import ViewModel.MyViewModel;
+import algorithms.mazeGenerators.Maze;
+import algorithms.mazeGenerators.Position;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import java.io.File;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
+import java.io.*;
 import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class MyViewController implements Observer, Initializable, IView {
-    private Thread musicThread;
-    private MediaPlayer MediaPlayer;
+public class MyViewController implements Observer, Initializable, IView{
     public MyViewModel viewModel;
     public MazeDisplay mazeDisplay;
     public TextField textField_mazeRows;
@@ -34,10 +38,6 @@ public class MyViewController implements Observer, Initializable, IView {
     public Label playerCol;
     double WidthRatio = 820;
     double HeightRatio = 770;
-    public boolean stop;
-
-
-
 
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
@@ -67,10 +67,6 @@ public class MyViewController implements Observer, Initializable, IView {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         playerRow.textProperty().bind(updatePlayerRow);
         playerCol.textProperty().bind(updatePlayerCol);
-
-
-
-
     }
 
     public void generateMaze(ActionEvent actionEvent) {
@@ -78,31 +74,26 @@ public class MyViewController implements Observer, Initializable, IView {
         int cols = Integer.valueOf(textField_mazeColumns.getText());
 
         viewModel.generateMaze(rows, cols);
-
     }
+
 
     public void solveMaze(ActionEvent actionEvent) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("Solving maze...");
-        alert.show();
-        viewModel.solveMaze();
+        if(viewModel.getMaze() == null){
+            throwInfoAlert("Only a donkey jumps in the head.. Initialize a maze first");
+        }
+        else{
+            throwInfoAlert("Finding a route for you");
+            viewModel.solveMaze();
+        }
     }
 
-    public void openFile(ActionEvent actionEvent) {
-        FileChooser fc = new FileChooser();
-        fc.setTitle("Open maze");
-        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Maze files (*.maze)", "*.maze"));
-        fc.setInitialDirectory(new File("./resources"));
-        File chosen = fc.showOpenDialog(null);
-        //...
-    }
 
     public void keyPressed(KeyEvent keyEvent) {
         viewModel.movePlayer(keyEvent);
         keyEvent.consume();
     }
 
-    public void setPlayerPosition(int row, int col) {
+    public void setPlayerPosition(int row, int col){
         mazeDisplay.setPlayerPosition(row, col);
         setUpdatePlayerRow(row);
         setUpdatePlayerCol(col);
@@ -114,8 +105,8 @@ public class MyViewController implements Observer, Initializable, IView {
     }
 
     public void Scrolled(ScrollEvent scrollEvent) {
-        if (scrollEvent.isControlDown()) {
-            if (scrollEvent.getDeltaY() > 0)
+        if(scrollEvent.isControlDown()){
+            if(scrollEvent.getDeltaY() > 0)
                 this.mazeDisplay.zoomIn();
             else
                 this.mazeDisplay.zoomOut();
@@ -127,7 +118,7 @@ public class MyViewController implements Observer, Initializable, IView {
     @Override
     public void update(Observable o, Object arg) {
         String change = (String) arg;
-        switch (change) {
+        switch (change){
             case "Generated" -> mazeGenerated();
             case "Moved" -> playerMoved();
             case "Solved" -> mazeSolved();
@@ -136,7 +127,7 @@ public class MyViewController implements Observer, Initializable, IView {
     }
 
     private void mazeSolved() {
-        mazeDisplay.drawSolution(viewModel.getSolution());
+        mazeDisplay.updateSolution(viewModel.getSolution());
     }
 
     private void playerMoved() {
@@ -147,13 +138,13 @@ public class MyViewController implements Observer, Initializable, IView {
         mazeDisplay.drawMaze(viewModel.getMaze());
     }
 
-    public void AdjustSize() {
+    public void AdjustSize(){
         this.mazeDisplay.setWidth(WidthRatio);
         this.mazeDisplay.setHeight(HeightRatio);
         this.mazeDisplay.resize();
     }
 
-    public void listenToScene(Scene scene) {
+    public void listenToSceneSize(Scene scene) {
         scene.widthProperty().addListener((obs, oldVal, newVal) -> {
             this.WidthRatio -= (oldVal.doubleValue() - newVal.doubleValue());
             AdjustSize();
@@ -166,33 +157,114 @@ public class MyViewController implements Observer, Initializable, IView {
     }
 
 
+    public void NewMaze(ActionEvent actionEvent) {
 
+    }
 
-    public void playAudio(ActionEvent actionEvent) {
+    private void throwInfoAlert(String text){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(text);
+        alert.show();
+    }
 
-        stop=false;
-        musicThread = new Thread(()->{
-                try {
-                    while(!stop) {
-                        //String musicFile = "resources/Sounds/theme.mp3";
-                        Media sound = new Media(this.getClass().getResource("/music/pokemon.mp3").toString());
-                        //Media sound = new Media(new File(musicFile).toURI().toString());
-                        MediaPlayer mediaPlayer= new MediaPlayer(sound);
-                        mediaPlayer.setVolume(0.1);
-                        mediaPlayer.play();
-                        int time = 220000;
-                        Thread.sleep(time);
-
-
-                    }
+    public void SaveMaze(ActionEvent actionEvent) {
+        if(viewModel.getMaze() == null){
+            throwInfoAlert("A Maze has yet to be initialized");
+        }
+        else{
+            try {
+                DirectoryChooser DirChooser = new DirectoryChooser();
+                DirChooser.setTitle("Open maze");
+                DirChooser.setInitialDirectory(new File("./resources"));
+                File chosen = DirChooser.showDialog(null);
+                if (chosen != null) {
+                    File saveDir = new File(chosen.getPath());
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveDir));
+                    Object object = new Object();
+                    object = viewModel.getMaze();
+                    objectOutputStream.writeObject(object);
+                    objectOutputStream.flush();
+                    objectOutputStream.close();
                 }
-                catch (Exception e) {
-                    System.out.println("end of thread");
-
+                else{
+                    throwInfoAlert("Error choosing directory");
                 }
-            });
-            musicThread.start();
+            }
+            catch (Exception e){
+                throwInfoAlert("Could not save the specific file");
+            }
         }
 
-}
+    }
 
+    public void LoadMaze(ActionEvent actionEvent) {
+        try {
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Open maze");
+            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Maze files (*.maze)", "*.maze"));
+            fc.setInitialDirectory(new File("./resources"));
+            File chosen = fc.showOpenDialog(null);
+            if (chosen != null) {
+                FileInputStream inputStream = new FileInputStream(chosen);
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                viewModel.LoadMaze((Maze) objectInputStream.readObject());
+                objectInputStream.close();
+                inputStream.close();
+            }
+        }
+        catch (Exception e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Could not load the specific file");
+            alert.show();
+        }
+    }
+
+
+    public void OpenProperties(ActionEvent actionEvent) {
+
+    }
+    public void listenToStageExit(Stage primaryStage) {
+        primaryStage.setOnCloseRequest(WindowEvent -> {
+            Exit();
+            WindowEvent.consume();});
+    }
+
+    public void listenToStageExits(Stage primaryStage) {
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent windowEvent){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Exit");
+                alert.setHeaderText("Are you sure?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK)
+                    System.exit(0);
+                else
+                    windowEvent.consume();
+
+            }
+        });
+    }
+
+    public void ExitButton(ActionEvent actionEvent) {
+        Exit();
+    }
+
+    private void Exit() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exit");
+        alert.setHeaderText("Are you sure?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            viewModel.Exit();
+            System.exit(0);
+        }
+    }
+
+    public void About(ActionEvent actionEvent) {
+
+    }
+
+
+    public void Rules(ActionEvent actionEvent) {
+    }
+}

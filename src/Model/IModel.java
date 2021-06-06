@@ -13,4 +13,6 @@ public interface IModel {
     void setObserver(Observer o);
     void solveMaze();
     Solution getSolution();
+    void LoadMaze(Maze maze);
+    void Exit();
 }

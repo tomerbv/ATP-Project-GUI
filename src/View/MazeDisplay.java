@@ -1,20 +1,25 @@
 package View;
 
+import algorithms.search.AState;
 import algorithms.mazeGenerators.Maze;
+import algorithms.search.MazeState;
 import algorithms.search.Solution;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 public class MazeDisplay extends Canvas {
     private Maze maze;
+    private Solution solution;
     private int height = 0;
     private int width = 0;
     private double zoomFactor = 1;
@@ -81,6 +86,7 @@ public class MazeDisplay extends Canvas {
         this.maze = maze;
         this.playerRow = maze.getStartPosition().getRowIndex();
         this.playerCol = maze.getStartPosition().getColumnIndex();
+        this.solution = null;
         draw();
     }
 
@@ -102,7 +108,9 @@ public class MazeDisplay extends Canvas {
             graphicsContext.clearRect(0, 0, getWidth(), getHeight());
 
             drawMazeWalls(graphicsContext, cellHeight, cellWidth, maze.getRows(), maze.getColumns());
+            drawSolution(solution, graphicsContext, cellHeight, cellWidth);
             drawPlayer(graphicsContext, cellHeight, cellWidth);
+
         }
     }
 
@@ -181,7 +189,33 @@ public class MazeDisplay extends Canvas {
             graphicsContext.drawImage(playerImage, x, y, cellWidth, cellHeight);
     }
 
-    public void drawSolution(Solution solution) {
+    public void updateSolution(Solution solution) {
+        if(solution == null){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Could Not Solve Maze");
+            alert.show();
+        }
+
+        else {
+            this.solution = solution;
+            draw();
+        }
+    }
+
+    public void drawSolution(Solution solution, GraphicsContext graphicsContext, double cellHeight, double cellWidth) {
+        if(solution != null){
+            graphicsContext.setFill(Color.LIGHTBLUE);
+            ArrayList<AState> path = solution.getSolutionPath();
+            for (int i = 0; i < path.size(); i++) {
+                MazeState pathInd = (MazeState) path.get(i);
+                if(!(maze.getGoalPosition().getRowIndex() == pathInd.getPosition().getRowIndex() && maze.getGoalPosition().getColumnIndex() == pathInd.getPosition().getColumnIndex())){
+                    double x = pathInd.getPosition().getColumnIndex() * cellWidth;
+                    double y = pathInd.getPosition().getRowIndex() * cellHeight;
+                    graphicsContext.fillRoundRect(x + cellWidth/4, y + cellHeight/4, cellWidth/2, cellHeight/2, 5,5);
+                }
+            }
+
+        }
     }
 
     public void resize() {
@@ -197,4 +231,6 @@ public class MazeDisplay extends Canvas {
         if(zoomFactor < 1)
             zoomFactor += 0.05;
     }
+
+
 }

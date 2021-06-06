@@ -1,13 +1,19 @@
 package View;
-
 import Model.IModel;
 import Model.MyModel;
 import ViewModel.MyViewModel;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
+import java.util.Optional;
 
 public class Main extends Application {
 
@@ -22,7 +28,9 @@ public class Main extends Application {
         MyViewModel viewModel = new MyViewModel(model);
         MyViewController myViewControl = fxmlLoader.getController();
         myViewControl.setViewModel(viewModel);
-        myViewControl.listenToScene(scene);
+        myViewControl.listenToSceneSize(scene);
+        myViewControl.listenToStageExit(primaryStage);
+        
         primaryStage.show();
 
     }
