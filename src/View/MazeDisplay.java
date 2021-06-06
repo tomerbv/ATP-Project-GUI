@@ -29,27 +29,14 @@ public class MazeDisplay extends Canvas {
     StringProperty imageFileNamePlayer = new SimpleStringProperty();
 
 
-    public int getPlayerRow() {
-        return playerRow;
-    }
 
-    public int getPlayerCol() {
-        return playerCol;
-    }
-
-    public void setPlayerPosition(int row, int col) {
-        this.playerRow = row;
-        this.playerCol = col;
-        draw();
-    }
 
     public String getImageFileNameWall() {
         return imageFileNameWall.get();
     }
 
-
-    public void setImageFileNameWall(String imageFileNameFloor) {
-        this.imageFileNameWall.set(imageFileNameFloor);
+    public void setImageFileNameWall(String imageFileNameWall) {
+        this.imageFileNameWall.set(imageFileNameWall);
     }
 
     public String getImageFileNameFloor() {
@@ -66,6 +53,28 @@ public class MazeDisplay extends Canvas {
 
     public void setImageFileNamePlayer(String imageFileNamePlayer) {
         this.imageFileNamePlayer.set(imageFileNamePlayer);
+    }
+
+    public String getImageFileNameFinish() {
+        return imageFileNameFinish.get();
+    }
+
+    public void setImageFileNameFinish(String imageFileNameFinish) {
+        this.imageFileNameFinish.set(imageFileNameFinish);
+    }
+
+    public int getPlayerRow() {
+        return playerRow;
+    }
+
+    public int getPlayerCol() {
+        return playerCol;
+    }
+
+    public void setPlayerPosition(int row, int col) {
+        this.playerRow = row;
+        this.playerCol = col;
+        draw();
     }
 
     public void drawMaze(Maze maze) {
@@ -99,13 +108,15 @@ public class MazeDisplay extends Canvas {
 
     private void drawMazeWalls(GraphicsContext graphicsContext, double cellHeight, double cellWidth, int rows, int cols) {
         graphicsContext.setFill(Color.DARKGRAY);
+        Image FinishImage = null;
         Image WallImage = null;
         Image FloorImage = null;
         try{
+            FinishImage = new Image(new FileInputStream(getImageFileNameFinish()));
             WallImage = new Image(new FileInputStream(getImageFileNameWall()));
             FloorImage = new Image(new FileInputStream(getImageFileNameFloor()));
         } catch (FileNotFoundException e) {
-            System.out.println("There is no wall image file");
+            System.out.println("An image file is missing");
         }
 
         for (int i = 0; i < rows; i++) {
@@ -116,6 +127,19 @@ public class MazeDisplay extends Canvas {
                     graphicsContext.setFill(Color.GREEN);
                     graphicsContext.fillRect(x, y, cellWidth, cellHeight);
                     graphicsContext.setFill(Color.DARKGRAY);
+                }
+
+                else if(maze.getGoalPosition().getRowIndex() == i && maze.getGoalPosition().getColumnIndex() == j){
+                    double x = j * cellWidth;
+                    double y = i * cellHeight;
+                    if(FinishImage == null ) {
+                        graphicsContext.setFill(Color.RED);
+                        graphicsContext.fillRect(x, y, cellWidth, cellHeight);
+                        graphicsContext.setFill(Color.DARKGRAY);
+                    }
+                    else
+                        graphicsContext.drawImage(FinishImage, x, y, cellWidth, cellHeight);
+
                 }
 
                 else if(maze.GetPositionVal(i,j) == 1){
@@ -165,7 +189,7 @@ public class MazeDisplay extends Canvas {
     }
 
     public void zoomIn() {
-        if(zoomFactor > 0.05)
+        if(zoomFactor > 0.1)
             zoomFactor -= 0.05;
     }
 
