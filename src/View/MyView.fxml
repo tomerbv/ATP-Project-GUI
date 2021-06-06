@@ -14,8 +14,8 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-
 <?import View.MazeDisplay?>
+
 <BorderPane onMouseClicked="#mouseClicked" onScroll="#Scrolled" prefHeight="408.0" prefWidth="594.0" stylesheets="@MazeStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
     <left>
         <VBox prefHeight="200.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
@@ -32,6 +32,8 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <Label text="Maze rows:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                     <Label text="Maze columns:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
@@ -43,6 +45,9 @@
                     <Label text="Player Col = " GridPane.rowIndex="5" />
                     <Label fx:id="playerRow" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     <Label fx:id="playerCol" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+               <Button alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#playAudio" prefHeight="23.0" prefWidth="71.0" text="Play Music" GridPane.rowIndex="6" />
+
+
                 </GridPane>
             </children>
             <padding>
@@ -88,7 +93,7 @@
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>
-                <MazeDisplay fx:id="mazeDisplay" height="770.0" width="820.0" imageFileNamePlayer="./resources/images/Avatar.jpg" imageFileNameWall="./resources/images/Wall1.png"  imageFileNameFloor="./resources/images/CaveFloor.png" imageFileNameFinish="./resources/images/FinishSquare.png" onKeyPressed="#keyPressed"  />
+                <MazeDisplay fx:id="mazeDisplay" height="770.0" imageFileNameFinish="./resources/images/MU2.jpg" imageFileNameFloor="./resources/images/CaveFloor.png" imageFileNamePlayer="./resources/images/Avatar.jpg" imageFileNameWall="./resources/images/Wall1.png" onKeyPressed="#keyPressed" width="820.0" />
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
