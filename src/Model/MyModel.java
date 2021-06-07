@@ -128,6 +128,11 @@ public class MyModel extends Observable implements IModel{
                     movePlayer(characterRowPos + 1, characterColPos - 1);
             }
         }
+//        if((characterRowPos==maze.getGoalPosition().getRowIndex()) && (characterColPos==maze.getGoalPosition().getRowIndex())){
+//            setChanged();
+//            notifyObservers("User Solved");
+//
+//        }
 
     }
 

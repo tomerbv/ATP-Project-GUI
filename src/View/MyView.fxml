@@ -44,7 +44,7 @@
                     <Label text="Player Col = " GridPane.rowIndex="5" />
                     <Label fx:id="playerRow" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     <Label fx:id="playerCol" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-               <Button mnemonicParsing="false" onAction="#playAudio" text="play music !" GridPane.rowIndex="6" />
+
                 </GridPane>
             </children>
             <padding>
@@ -81,6 +81,13 @@
                             <MenuItem mnemonicParsing="false" onAction="#Rules" text="Rules" />
                             <MenuItem mnemonicParsing="false" onAction="#About" text="About" />
                         </Menu>
+                        <Menu mnemonicParsing="false" text="Sound">
+                            <MenuItem mnemonicParsing="false" onAction="#playAudio" text="On" />
+                            <MenuItem mnemonicParsing="false" onAction="#stopAudio" text="Off" />
+
+
+                        </Menu>
+
                     </menus>
                 </MenuBar>
             </children>
@@ -89,7 +96,7 @@
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>
-                <MazeDisplay fx:id="mazeDisplay" height="770.0" imageFileNameFinish="./resources/images/FinishSquare.png" imageFileNameFloor="./resources/images/CaveFloor.png" imageFileNamePlayer="./resources/images/Avatar.jpg" imageFileNameWall="./resources/images/Wall1.png" onKeyPressed="#keyPressed" width="820.0" />
+                <MazeDisplay fx:id="mazeDisplay" height="770.0" imageFileNameFinish="./resources/images/MU2.jpg" imageFileNameFloor="./resources/images/CaveFloor.png" imageFileNamePlayer="./resources/images/Avatar.jpg" imageFileNameWall="./resources/images/Wall1.png" onKeyPressed="#keyPressed" width="820.0" />
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

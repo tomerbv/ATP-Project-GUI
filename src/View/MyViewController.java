@@ -95,6 +95,16 @@ public class MyViewController implements Observer, Initializable, IView{
     public void keyPressed(KeyEvent keyEvent) {
         viewModel.movePlayer(keyEvent);
         keyEvent.consume();
+        playMoveSound();
+    }
+
+    private void playMoveSound() {
+        Media sound = new Media(this.getClass().getResource("/music/movesound.wav").toString());
+        //Media sound = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer mediaPlayer= new MediaPlayer(sound);
+        mediaPlayer.setVolume(0.2);
+        mediaPlayer.play();
+
     }
 
     public void setPlayerPosition(int row, int col){
@@ -126,9 +136,23 @@ public class MyViewController implements Observer, Initializable, IView{
             case "Generated" -> mazeGenerated();
             case "Moved" -> playerMoved();
             case "Solved" -> mazeSolved();
+            //case "User Solved" -> UserSolved();
             default -> System.out.println("Not implemented change: " + change);
         }
     }
+
+//    private void UserSolved() {
+//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//        alert.setTitle("You have succesfully solved the maze");
+//        stop = true;
+//        musicThread.stop();
+//        Media sound = new Media(this.getClass().getResource("/music/winsound.wav").toString());
+//        //Media sound = new Media(new File(musicFile).toURI().toString());
+//        MediaPlayer mediaPlayer= new MediaPlayer(sound);
+//        mediaPlayer.setVolume(0.3);
+//        mediaPlayer.play();
+//
+//    }
 
     private void mazeSolved() {
         mazeDisplay.updateSolution(viewModel.getSolution());
@@ -233,21 +257,7 @@ public class MyViewController implements Observer, Initializable, IView{
             WindowEvent.consume();});
     }
 
-    public void listenToStageExits(Stage primaryStage) {
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            public void handle(WindowEvent windowEvent){
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Exit");
-                alert.setHeaderText("Are you sure?");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK)
-                    System.exit(0);
-                else
-                    windowEvent.consume();
 
-            }
-        });
-    }
 
     public void ExitButton(ActionEvent actionEvent) {
         Exit();
@@ -291,5 +301,10 @@ public class MyViewController implements Observer, Initializable, IView{
             catch (Exception e) {System.out.println(e); }
         });
         musicThread.start();
+    }
+
+    public void stopAudio(ActionEvent actionEvent) {
+        stop=true;
+        musicThread.stop();
     }
 }
