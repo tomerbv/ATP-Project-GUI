@@ -115,12 +115,9 @@ public class MyViewController implements Observer, Initializable, IView{
         Maze maze = viewModel.getMaze();
         if(maze.getGoalPosition().getRowIndex() == row && maze.getGoalPosition().getColumnIndex() == col) {
             stop = true;
-            mediaPlayer.stop();
-            Media sound = new Media(this.getClass().getResource("/music/CatVibing.mp3").toString());
-            //Media sound = new Media(new File(musicFile).toURI().toString());
-            WinmediaPlayer = new MediaPlayer(sound);
-            WinmediaPlayer.setVolume(0.2);
-            WinmediaPlayer.play();
+            if(mediaPlayer!=null)
+                mediaPlayer.stop();
+
             YouWin();
         }
 
@@ -136,6 +133,15 @@ public class MyViewController implements Observer, Initializable, IView{
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
+            Media sound = new Media(this.getClass().getResource("/music/CatVibing.mp3").toString());
+            //Media sound = new Media(new File(musicFile).toURI().toString());
+            WinmediaPlayer = new MediaPlayer(sound);
+            WinmediaPlayer.setVolume(0.2);
+            WinmediaPlayer.play();
+            stage.setOnCloseRequest((e -> {
+                WinmediaPlayer.stop();
+            }));
+
 
 
 
@@ -202,9 +208,7 @@ public class MyViewController implements Observer, Initializable, IView{
     }
 
 
-    public void NewMaze(ActionEvent actionEvent) {
 
-    }
 
     private void throwInfoAlert(String text){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
