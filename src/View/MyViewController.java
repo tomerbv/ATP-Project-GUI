@@ -8,7 +8,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -19,10 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import javafx.stage.*;
 
 import java.io.*;
 import java.net.URL;
@@ -101,6 +100,28 @@ public class MyViewController implements Observer, Initializable, IView{
         mazeDisplay.setPlayerPosition(row, col);
         setUpdatePlayerRow(row);
         setUpdatePlayerCol(col);
+        Maze maze = viewModel.getMaze();
+        if(maze.getGoalPosition().getRowIndex() == row && maze.getGoalPosition().getColumnIndex() == col)
+            YouWin();
+
+    }
+
+    private void YouWin() {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("You Have Won!");
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("YouWin.fxml").openStream());
+            Scene scene = new Scene(root, 600, 500);
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+
+            Media CatDrummertheme = new Media(this.getClass().getResource("/music/CatVibing.mp3").toString());
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void mouseClicked(MouseEvent mouseEvent) {
