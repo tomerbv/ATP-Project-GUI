@@ -5,10 +5,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" stylesheets="@MazeStyle.css" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AboutController">
+<AnchorPane maxHeight="-Infinity"  maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AboutController">
     <children>
-        <ImageView fx:id="image_view_about" fitHeight="230.0" fitWidth="585.0" layoutX="14.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
-        </ImageView>
       <Label layoutX="50" layoutY="50.0" text="Welcome to PokeMaze !" textFill="#aba024">
          <font>
             <Font name="System Bold Italic" size="24.0" />

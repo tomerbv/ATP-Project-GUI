@@ -40,11 +40,12 @@ public class MyViewController implements Observer, Initializable, IView{
     public double WidthRatio = 820;
     public double HeightRatio = 770;
     public Thread musicThread;
+    public volatile boolean stop;
     public MediaPlayer mediaPlayer;
-    public volatile boolean stop = false;
 
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
+    public MediaPlayer WinmediaPlayer;
 
     public void setViewModel(MyViewModel viewModel) {
         this.viewModel = viewModel;
@@ -111,6 +112,36 @@ public class MyViewController implements Observer, Initializable, IView{
         mazeDisplay.setPlayerPosition(row, col);
         setUpdatePlayerRow(row);
         setUpdatePlayerCol(col);
+        Maze maze = viewModel.getMaze();
+        if(maze.getGoalPosition().getRowIndex() == row && maze.getGoalPosition().getColumnIndex() == col) {
+            stop = true;
+            mediaPlayer.stop();
+            Media sound = new Media(this.getClass().getResource("/music/CatVibing.mp3").toString());
+            //Media sound = new Media(new File(musicFile).toURI().toString());
+            WinmediaPlayer = new MediaPlayer(sound);
+            WinmediaPlayer.setVolume(0.2);
+            WinmediaPlayer.play();
+            YouWin();
+        }
+
+    }
+
+    private void YouWin() {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("You Have Won!");
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("YouWin.fxml").openStream());
+            Scene scene = new Scene(root, 600, 500);
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void mouseClicked(MouseEvent mouseEvent) {
@@ -136,11 +167,9 @@ public class MyViewController implements Observer, Initializable, IView{
             case "Generated" -> mazeGenerated();
             case "Moved" -> playerMoved();
             case "Solved" -> mazeSolved();
-            //case "User Solved" -> UserSolved();
             default -> System.out.println("Not implemented change: " + change);
         }
     }
-
 
     private void mazeSolved() {
         mazeDisplay.updateSolution(viewModel.getSolution());
@@ -244,7 +273,6 @@ public class MyViewController implements Observer, Initializable, IView{
             Exit();
             WindowEvent.consume();});
     }
-
 
 
     public void ExitButton(ActionEvent actionEvent) {
