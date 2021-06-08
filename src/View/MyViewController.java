@@ -115,9 +115,12 @@ public class MyViewController implements Observer, Initializable, IView{
         Maze maze = viewModel.getMaze();
         if(maze.getGoalPosition().getRowIndex() == row && maze.getGoalPosition().getColumnIndex() == col) {
             stop = true;
-            if(mediaPlayer!=null)
+            if(!(mediaPlayer == null))
                 mediaPlayer.stop();
-
+            Media sound = new Media(this.getClass().getResource("/music/CatVibing.mp3").toString());
+            mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.setVolume(0.2);
+            mediaPlayer.play();
             YouWin();
         }
 
@@ -129,18 +132,13 @@ public class MyViewController implements Observer, Initializable, IView{
             stage.setTitle("You Have Won!");
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("YouWin.fxml").openStream());
-            Scene scene = new Scene(root, 600, 500);
+            Scene scene = new Scene(root, 700, 350);
+            stage.setOnCloseRequest(WindowEvent -> {
+                ExitYouWin(stage);
+                WindowEvent.consume();});
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
-            Media sound = new Media(this.getClass().getResource("/music/CatVibing.mp3").toString());
-            //Media sound = new Media(new File(musicFile).toURI().toString());
-            WinmediaPlayer = new MediaPlayer(sound);
-            WinmediaPlayer.setVolume(0.2);
-            WinmediaPlayer.play();
-            stage.setOnCloseRequest((e -> {
-                WinmediaPlayer.stop();
-            }));
 
 
 
@@ -149,6 +147,23 @@ public class MyViewController implements Observer, Initializable, IView{
             System.out.println(e.getMessage());
         }
     }
+
+    private void ExitYouWin(Stage stage) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Play again or quit");
+        alert.setHeaderText("Would you like to go for another or did you have enough?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            NewMaze(new ActionEvent());
+            stage.close();
+            mediaPlayer.stop();
+        }
+        else
+            Exit();
+
+    }
+
+
 
     public void mouseClicked(MouseEvent mouseEvent) {
         mazeDisplay.requestFocus();
@@ -208,7 +223,9 @@ public class MyViewController implements Observer, Initializable, IView{
     }
 
 
-
+    public void NewMaze(ActionEvent actionEvent) {
+        viewModel.generateMaze(Integer.valueOf(textField_mazeRows.getText()), Integer.valueOf(textField_mazeColumns.getText()));
+    }
 
     private void throwInfoAlert(String text){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -331,6 +348,8 @@ public class MyViewController implements Observer, Initializable, IView{
 
     public void playAudio(ActionEvent actionEvent) {
         stop = false;
+        if(!(mediaPlayer == null))
+            mediaPlayer.stop();
         musicThread = new Thread(()-> {
             try {
                 while (!stop) {
