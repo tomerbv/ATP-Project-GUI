@@ -141,18 +141,6 @@ public class MyViewController implements Observer, Initializable, IView{
         }
     }
 
-//    private void UserSolved() {
-//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-//        alert.setTitle("You have succesfully solved the maze");
-//        stop = true;
-//        musicThread.stop();
-//        Media sound = new Media(this.getClass().getResource("/music/winsound.wav").toString());
-//        //Media sound = new Media(new File(musicFile).toURI().toString());
-//        MediaPlayer mediaPlayer= new MediaPlayer(sound);
-//        mediaPlayer.setVolume(0.3);
-//        mediaPlayer.play();
-//
-//    }
 
     private void mazeSolved() {
         mazeDisplay.updateSolution(viewModel.getSolution());
