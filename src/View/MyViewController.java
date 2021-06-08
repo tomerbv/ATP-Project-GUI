@@ -8,7 +8,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -19,10 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import javafx.stage.*;
 
 import java.io.*;
 import java.net.URL;
@@ -38,10 +37,11 @@ public class MyViewController implements Observer, Initializable, IView{
     public TextField textField_mazeColumns;
     public Label playerRow;
     public Label playerCol;
-    double WidthRatio = 820;
-    double HeightRatio = 770;
-    Thread musicThread;
-    boolean stop;
+    public double WidthRatio = 820;
+    public double HeightRatio = 770;
+    public Thread musicThread;
+    public MediaPlayer mediaPlayer;
+    public volatile boolean stop = false;
 
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
@@ -275,36 +275,65 @@ public class MyViewController implements Observer, Initializable, IView{
     }
 
     public void About(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("About");
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("About.fxml").openStream());
+            Scene scene = new Scene(root, 400, 350);
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            stage.show();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 
 
     public void Rules(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("Rules");
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("Rules.fxml").openStream());
+            Scene scene = new Scene(root, 400, 350);
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            stage.show();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void playAudio(ActionEvent actionEvent) {
         stop = false;
-        musicThread = new Thread(()->{
+        musicThread = new Thread(()-> {
             try {
-                while(!stop) {
+                while (!stop) {
                     //String musicFile = "resources/Sounds/theme.mp3";
                     Media sound = new Media(this.getClass().getResource("/music/pokemon.mp3").toString());
                     //Media sound = new Media(new File(musicFile).toURI().toString());
-                    MediaPlayer mediaPlayer= new MediaPlayer(sound);
+                    mediaPlayer = new MediaPlayer(sound);
                     mediaPlayer.setVolume(0.2);
                     mediaPlayer.play();
 
-                    int time = 219000;
+                    int time = 200000;
                     Thread.sleep(time);
                 }
+            } catch (Exception var2) {
+                var2.printStackTrace();
             }
-            catch (Exception e) {System.out.println(e); }
+
         });
         musicThread.start();
     }
 
     public void stopAudio(ActionEvent actionEvent) {
-        stop=true;
-        musicThread.stop();
+        stop = true;
+        mediaPlayer.stop();
     }
 }

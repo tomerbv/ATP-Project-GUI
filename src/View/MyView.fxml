@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import View.MazeDisplay?>
 
 <BorderPane onMouseClicked="#mouseClicked" onScroll="#Scrolled" prefHeight="408.0" prefWidth="594.0" stylesheets="@MazeStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
@@ -34,14 +35,26 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
-                    <Label text="Maze rows:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <Label text="Maze columns:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label text="Maze rows:" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                  <font>
+                     <Font name="System Bold" size="12.0" />
+                  </font></Label>
+                    <Label text="Maze columns:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                  <font>
+                     <Font name="System Bold" size="11.0" />
+                  </font></Label>
                     <TextField fx:id="textField_mazeRows" text="50" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                     <TextField fx:id="textField_mazeColumns" text="50" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <Button onAction="#generateMaze" prefHeight="25.0" prefWidth="167.0" text="Generate Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
                     <Button cancelButton="true" onAction="#solveMaze" prefHeight="25.0" prefWidth="167.0" text="Solve Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                    <Label text="Player Row = " GridPane.rowIndex="4" />
-                    <Label text="Player Col = " GridPane.rowIndex="5" />
+                    <Label text="Player Row = " GridPane.rowIndex="4">
+                  <font>
+                     <Font name="System Bold" size="12.0" />
+                  </font></Label>
+                    <Label text="Player Col = " GridPane.rowIndex="5">
+                  <font>
+                     <Font name="System Bold" size="12.0" />
+                  </font></Label>
                     <Label fx:id="playerRow" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     <Label fx:id="playerCol" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
