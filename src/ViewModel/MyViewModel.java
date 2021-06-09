@@ -64,4 +64,8 @@ public class MyViewModel extends Observable implements Observer {
     public void Exit() {
         model.Exit();
     }
+
+    public void load(Maze loadedMaze) {
+        model.LoadMaze(loadedMaze);
+    }
 }

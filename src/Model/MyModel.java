@@ -73,6 +73,7 @@ public class MyModel extends Observable implements IModel{
 
     @Override
     public void LoadMaze(Maze maze){
+
         setMaze(maze);
     }
 

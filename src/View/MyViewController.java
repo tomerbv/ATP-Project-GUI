@@ -47,6 +47,7 @@ public class MyViewController implements Observer, Initializable, IView{
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
     public MediaPlayer WinmediaPlayer;
+    private MazeDisplay mazeDisplayer;
 
     public void setViewModel(MyViewModel viewModel) {
         this.viewModel = viewModel;
@@ -110,8 +111,9 @@ public class MyViewController implements Observer, Initializable, IView{
                 return;
             }
         }
-        viewModel.movePlayer(direction);
+
         mazeDisplay.movePlayer(direction);
+        viewModel.movePlayer(direction);
         keyEvent.consume();
         playMoveSound();
     }
@@ -256,23 +258,25 @@ public class MyViewController implements Observer, Initializable, IView{
         }
         else{
             try {
-                DirectoryChooser DirChooser = new DirectoryChooser();
-                DirChooser.setTitle("Open maze");
-                DirChooser.setInitialDirectory(new File("./resources"));
-                File chosen = DirChooser.showDialog(null);
-                if (chosen != null) {
-                    File saveDir = new File(chosen.getPath());
-                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveDir));
-                    Object object = new Object();
-                    object = viewModel.getMaze();
-                    objectOutputStream.writeObject(object);
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Save Maze");
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze", "*.mz"));
+                File file = fileChooser.showSaveDialog(null);
+                if (file != null) {
+                    File saveFile = new File(file.getPath());
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFile));
+                    Object maze = new Object();
+                    maze = viewModel.getMaze();
+
+                    objectOutputStream.writeObject(maze);
                     objectOutputStream.flush();
                     objectOutputStream.close();
                 }
                 else{
-                    throwInfoAlert("Error choosing directory");
+                    throwInfoAlert("Error Saving");
                 }
-            }
+
+        }
             catch (Exception e){
                 throwInfoAlert("Could not save the specific file");
             }
@@ -282,23 +286,25 @@ public class MyViewController implements Observer, Initializable, IView{
 
     public void LoadMaze(ActionEvent actionEvent) {
         try {
-            FileChooser fc = new FileChooser();
-            fc.setTitle("Open maze");
-            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Maze files (*.maze)", "*.maze"));
-            fc.setInitialDirectory(new File("./resources"));
-            File chosen = fc.showOpenDialog(null);
-            if (chosen != null) {
-                FileInputStream inputStream = new FileInputStream(chosen);
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Load Maze");
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze", "*.mz"));
+            File file = fileChooser.showOpenDialog(null);
+            if (file != null) {
+                File loadFile = new File(file.getPath());
+                FileInputStream inputStream = new FileInputStream(loadFile);
                 ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-                viewModel.LoadMaze((Maze) objectInputStream.readObject());
+                Object maze = (Object)objectInputStream.readObject();
+                Maze loadedMaze = (Maze)maze;
+
+                viewModel.LoadMaze(loadedMaze);
+                //displayMaze(loadedMaze);
                 objectInputStream.close();
                 inputStream.close();
             }
         }
         catch (Exception e){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("Could not load the specific file");
-            alert.show();
+            throwInfoAlert("Could not load file");
         }
     }
 
