@@ -15,4 +15,5 @@ public interface IModel {
     Solution getSolution();
     void LoadMaze(Maze maze);
     void Exit();
+
 }

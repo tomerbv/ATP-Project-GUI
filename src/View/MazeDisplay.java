@@ -131,6 +131,8 @@ public class MazeDisplay extends Canvas {
         this.playerRow = maze.getStartPosition().getRowIndex();
         this.playerCol = maze.getStartPosition().getColumnIndex();
         this.solution = null;
+        UpdatePlayerImage(getImageFileNameDown());
+
         draw();
     }
 
@@ -173,15 +175,8 @@ public class MazeDisplay extends Canvas {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                if(maze.getStartPosition().getRowIndex() == i && maze.getStartPosition().getColumnIndex() == j){
-                    double x = j * cellWidth;
-                    double y = i * cellHeight;
-                    graphicsContext.setFill(Color.GREEN);
-                    graphicsContext.fillRect(x, y, cellWidth, cellHeight);
-                    graphicsContext.setFill(Color.DARKGRAY);
-                }
 
-                else if(maze.getGoalPosition().getRowIndex() == i && maze.getGoalPosition().getColumnIndex() == j){
+                if(maze.getGoalPosition().getRowIndex() == i && maze.getGoalPosition().getColumnIndex() == j){
                     double x = j * cellWidth;
                     double y = i * cellHeight;
                     if(FinishImage == null ) {
