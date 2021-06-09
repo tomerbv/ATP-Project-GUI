@@ -298,7 +298,7 @@ public class MyViewController implements Observer, Initializable, IView{
                 Maze loadedMaze = (Maze)maze;
 
                 viewModel.LoadMaze(loadedMaze);
-                //displayMaze(loadedMaze);
+
                 objectInputStream.close();
                 inputStream.close();
             }
@@ -310,6 +310,22 @@ public class MyViewController implements Observer, Initializable, IView{
 
 
     public void OpenProperties(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("Porperties Settings");
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("Settings.fxml").openStream());
+            Scene scene = new Scene(root, 400, 350);
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            if(mediaPlayer!=null)
+                mediaPlayer.stop();
+
+            stage.show();
+        }
+        catch (Exception e){
+            throwInfoAlert("could not open Settings scene");
+        }
 
     }
     public void listenToStageExit(Stage primaryStage) {

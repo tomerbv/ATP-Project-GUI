@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" style="-fx-background-color: bisque;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.SettingsController">
+   <children>
+      <Label layoutX="213.0" layoutY="30.0" text="Settings">
+         <font>
+            <Font name="System Bold Italic" size="36.0" />
+         </font>
+      </Label>
+      <Label layoutX="26.0" layoutY="97.0" text="Enter the number of rows wanted in the Maze :" />
+      <Label layoutX="26.0" layoutY="131.0" text="Enter the number of columns in the Maze :" />
+      <TextField fx:id="textField_mazeRows" layoutX="281.0" layoutY="93.0" prefHeight="25.0" prefWidth="67.0" />
+      <TextField fx:id="textField_mazeColumns" layoutX="256.0" layoutY="127.0" prefHeight="25.0" prefWidth="67.0" />
+      <Label layoutX="28.0" layoutY="164.0" prefHeight="17.0" prefWidth="203.0" text="Pick the Algorithm to Solve the Maze :" />
+      <RadioButton layoutX="246.0" layoutY="164.0" mnemonicParsing="false" text="Breadth First Search" />
+      <RadioButton layoutX="246.0" layoutY="192.0" mnemonicParsing="false" text="Depth First Search" />
+      <RadioButton layoutX="246.0" layoutY="219.0" mnemonicParsing="false" text="Best First Search" />
+      <Label layoutX="28.0" layoutY="259.0" text="pick the number of threads you want :" />
+      <TextField fx:id="textfield_numofthreads" layoutX="235.0" layoutY="255.0" prefHeight="25.0" prefWidth="57.0" />
+   </children>
+</AnchorPane>
