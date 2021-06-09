@@ -44,22 +44,7 @@ public class MyViewModel extends Observable implements Observer {
         model.generateMaze(rows, cols);
     }
 
-    public void movePlayer(KeyEvent keyEvent){
-        Direction direction;
-        switch (keyEvent.getCode()){
-            case UP, NUMPAD8 -> direction = Direction.UP;
-            case DOWN, NUMPAD2 -> direction = Direction.DOWN;
-            case LEFT, NUMPAD4 -> direction = Direction.LEFT;
-            case RIGHT, NUMPAD6 -> direction = Direction.RIGHT;
-            case NUMPAD9 -> direction = Direction.UPRIGHT;
-            case NUMPAD7 -> direction = Direction.UPLEFT;
-            case NUMPAD1 -> direction = Direction.DOWNLEFT;
-            case NUMPAD3 -> direction = Direction.DOWNRIGHT;
-            default -> {
-                // no need to move the player...
-                return;
-            }
-        }
+    public void movePlayer(Direction direction){
         model.updatePlayerLocation(direction);
     }
 

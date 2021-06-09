@@ -1,16 +1,17 @@
 package View;
 
+import Model.Direction;
 import algorithms.search.AState;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.MazeState;
 import algorithms.search.Solution;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 
 import java.io.FileInputStream;
@@ -25,16 +26,57 @@ public class MazeDisplay extends Canvas {
     private double zoomFactor = 1;
     private int playerRow = 0;
     private int playerCol = 0;
-
+    private Image playerImage;
 
     StringProperty imageFileNameWall = new SimpleStringProperty();
     StringProperty imageFileNameFloor = new SimpleStringProperty();
     StringProperty imageFileNameStart = new SimpleStringProperty();
     StringProperty imageFileNameFinish = new SimpleStringProperty();
     StringProperty imageFileNamePlayer = new SimpleStringProperty();
+    StringProperty imageFileNameLeft = new SimpleStringProperty();
+    StringProperty imageFileNameRight = new SimpleStringProperty();
+    StringProperty imageFileNameUp = new SimpleStringProperty();
+    StringProperty imageFileNameDown = new SimpleStringProperty();
+
+    public String getImageFileNameLeft() {
+        return imageFileNameLeft.get();
+    }
 
 
 
+    public void setImageFileNameLeft(String imageFileNameLeft) {
+        this.imageFileNameLeft.set(imageFileNameLeft);
+    }
+
+    public String getImageFileNameRight() {
+        return imageFileNameRight.get();
+    }
+
+
+
+    public void setImageFileNameRight(String imageFileNameRight) {
+        this.imageFileNameRight.set(imageFileNameRight);
+    }
+
+    public String getImageFileNameUp() {
+        return imageFileNameUp.get();
+    }
+
+
+
+    public void setImageFileNameUp(String imageFileNameUp) {
+        this.imageFileNameUp.set(imageFileNameUp);
+    }
+
+    public String getImageFileNameDown() {
+        return imageFileNameDown.get();
+    }
+
+
+
+    public void setImageFileNameDown(String imageFileNameDown) {
+        this.imageFileNameDown.set(imageFileNameDown);
+    }
 
     public String getImageFileNameWall() {
         return imageFileNameWall.get();
@@ -174,17 +216,58 @@ public class MazeDisplay extends Canvas {
         }
     }
 
+    private void UpdatePlayerImage(String path){
+        try{
+            this.playerImage = new Image(new FileInputStream(path));
+        } catch (FileNotFoundException e) {
+            System.out.println("An image file is missing");
+        }
+    }
+    public void movePlayer(Direction direction) {
+        switch (direction) {
+            case UP -> {
+                UpdatePlayerImage(getImageFileNameUp());
+
+            }
+            case DOWN -> {
+                UpdatePlayerImage(getImageFileNameDown());
+
+            }
+            case LEFT -> {
+                UpdatePlayerImage(getImageFileNameLeft());
+
+            }
+            case RIGHT -> {
+                UpdatePlayerImage(getImageFileNameRight());
+
+            }
+
+            case UPRIGHT -> {
+                UpdatePlayerImage(getImageFileNameUp());
+
+
+            }
+            case DOWNRIGHT -> {
+                UpdatePlayerImage(getImageFileNameDown());
+
+            }
+            case UPLEFT -> {
+                UpdatePlayerImage(getImageFileNameUp());
+
+            }
+            case DOWNLEFT -> {
+                UpdatePlayerImage(getImageFileNameDown());
+
+            }
+        }
+    }
+
     private void drawPlayer(GraphicsContext graphicsContext, double cellHeight, double cellWidth) {
         double x = getPlayerCol() * cellWidth;
         double y = getPlayerRow() * cellHeight;
         graphicsContext.setFill(Color.GREEN);
 
-        Image playerImage = null;
-        try {
-            playerImage = new Image(new FileInputStream(getImageFileNamePlayer()));
-        } catch (FileNotFoundException e) {
-            System.out.println("There is no player image file");
-        }
+
         if(playerImage == null)
             graphicsContext.fillRect(x, y, cellWidth, cellHeight);
         else
@@ -233,6 +316,7 @@ public class MazeDisplay extends Canvas {
         if(zoomFactor < 1)
             zoomFactor += 0.05;
     }
+
 
 
 }
