@@ -1,5 +1,6 @@
 package View;
 
+import Model.Direction;
 import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
@@ -94,7 +95,23 @@ public class MyViewController implements Observer, Initializable, IView{
 
 
     public void keyPressed(KeyEvent keyEvent) {
-        viewModel.movePlayer(keyEvent);
+        Direction direction;
+        switch (keyEvent.getCode()){
+            case UP, NUMPAD8 -> direction = Direction.UP;
+            case DOWN, NUMPAD2 -> direction = Direction.DOWN;
+            case LEFT, NUMPAD4 -> direction = Direction.LEFT;
+            case RIGHT, NUMPAD6 -> direction = Direction.RIGHT;
+            case NUMPAD9 -> direction = Direction.UPRIGHT;
+            case NUMPAD7 -> direction = Direction.UPLEFT;
+            case NUMPAD1 -> direction = Direction.DOWNLEFT;
+            case NUMPAD3 -> direction = Direction.DOWNRIGHT;
+            default -> {
+                // no need to move the player...
+                return;
+            }
+        }
+        viewModel.movePlayer(direction);
+        mazeDisplay.movePlayer(direction);
         keyEvent.consume();
         playMoveSound();
     }
@@ -132,7 +149,7 @@ public class MyViewController implements Observer, Initializable, IView{
             stage.setTitle("You Have Won!");
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("YouWin.fxml").openStream());
-            Scene scene = new Scene(root, 700, 350);
+            Scene scene = new Scene(root, 700, 400);
             stage.setOnCloseRequest(WindowEvent -> {
                 ExitYouWin(stage);
                 WindowEvent.consume();});

@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import View.MazeDisplay?>
+<?import View.*?>
 
 <BorderPane onMouseClicked="#mouseClicked" onScroll="#Scrolled" prefHeight="408.0" prefWidth="594.0" stylesheets="@MazeStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
     <left>
@@ -43,8 +43,8 @@
                   <font>
                      <Font name="System Bold" size="11.0" />
                   </font></Label>
-                    <TextField fx:id="textField_mazeRows" text="50" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                    <TextField fx:id="textField_mazeColumns" text="50" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <TextField fx:id="textField_mazeRows" text="10" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <TextField fx:id="textField_mazeColumns" text = "10" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                     <Button cancelButton="true" onAction="#solveMaze" prefHeight="25.0" prefWidth="167.0" text="Solve Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
                     <Label text="Player Row = " GridPane.rowIndex="4">
@@ -109,7 +109,7 @@
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>
-                <MazeDisplay fx:id="mazeDisplay" height="770.0" imageFileNameFinish="./resources/images/MU2.jpg" imageFileNameFloor="./resources/images/CaveFloor.png" imageFileNamePlayer="./resources/images/Avatar.jpg" imageFileNameWall="./resources/images/Wall1.png" onKeyPressed="#keyPressed" width="820.0" />
+                <MazeDisplay fx:id="mazeDisplay" height="770.0" imageFileNameLeft="./resources/images/Left.png" imageFileNameRight="./resources/images/Right.png" imageFileNameUp="./resources/images/Up.png" imageFileNameDown="./resources/images/Down.png" imageFileNameFinish="./resources/images/mu 2.png" imageFileNameFloor="./resources/images/CaveFloor.png" imageFileNamePlayer="./resources/images/Avatar.jpg" imageFileNameWall="./resources/images/Wall1.png" onKeyPressed="#keyPressed" width="820.0" />
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
