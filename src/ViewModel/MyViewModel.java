@@ -69,4 +69,9 @@ public class MyViewModel extends Observable implements Observer {
         model.LoadMaze(loadedMaze);
     }
 
+
+
+    public String[] getConfigurations() {
+        return model.getConfigurations();
+    }
 }

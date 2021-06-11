@@ -1,7 +1,6 @@
 package View;
 
 import Model.Direction;
-import Server.Configurations;
 import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
@@ -27,7 +26,10 @@ import javafx.stage.*;
 
 import java.io.*;
 import java.net.URL;
-import java.util.*;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class MyViewController implements Observer, Initializable, IView{
     public MyViewModel viewModel;
@@ -99,15 +101,21 @@ public class MyViewController implements Observer, Initializable, IView{
             throwInfoAlert("Only a donkey jumps in the head.. Initialize a maze first");
         }
         else{
-            throwInfoAlert("Finding a route for you");
-            viewModel.solveMaze();
+            if(viewModel.getSolution()!=null){
+                throwInfoAlert("Maze already solved");
+
+            }
+            else {
+                throwInfoAlert("Finding a route for you");
+                viewModel.solveMaze();
+            }
         }
     }
 
 
     public void keyPressed(KeyEvent keyEvent) {
         Direction direction;
-        switch (keyEvent.getCode()) {
+        switch (keyEvent.getCode()){
             case UP, NUMPAD8 -> direction = Direction.UP;
             case DOWN, NUMPAD2 -> direction = Direction.DOWN;
             case LEFT, NUMPAD4 -> direction = Direction.LEFT;
@@ -134,8 +142,6 @@ public class MyViewController implements Observer, Initializable, IView{
         keyEvent.consume();
 
     }
-
-
 
     private void playMoveSound() {
         Media sound = new Media(this.getClass().getResource("/music/movesound.wav").toString());
@@ -175,7 +181,11 @@ public class MyViewController implements Observer, Initializable, IView{
                 ExitYouWin(stage);
                 WindowEvent.consume();});
             stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
+
+
+
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -330,11 +340,19 @@ public class MyViewController implements Observer, Initializable, IView{
             stage.setTitle("Porperties Settings");
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("Settings.fxml").openStream());
+
             Scene scene = new Scene(root, 400, 350);
             stage.setScene(scene);
+
             stage.initModality(Modality.APPLICATION_MODAL);
             if(mediaPlayer!=null)
                 mediaPlayer.stop();
+            String[] configuriations = new String[2];
+            configuriations=viewModel.getConfigurations();
+            SettingsController propertiescontroller = fxmlLoader.getController();
+            propertiescontroller.SetConfigurations(configuriations);
+
+
             stage.show();
         }
         catch (Exception e){

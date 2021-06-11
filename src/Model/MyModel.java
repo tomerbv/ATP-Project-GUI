@@ -25,6 +25,8 @@ public class MyModel extends Observable implements IModel{
     private Server generateMazeServer, solveMazeServer;
     private ExecutorService threadPool;
 
+
+
     public MyModel() {
         characterRowPos = 1;
         characterColPos = 1;
@@ -33,6 +35,10 @@ public class MyModel extends Observable implements IModel{
         generateMazeServer.start();
         solveMazeServer.start();
         threadPool = Executors.newCachedThreadPool();
+        Configurations config = Configurations.getInstance();
+
+
+
     }
     
     public void Exit(){
@@ -40,6 +46,15 @@ public class MyModel extends Observable implements IModel{
         solveMazeServer.stop();
         threadPool.shutdown();
     }
+
+    @Override
+    public String[] getConfigurations() {
+        String[] configurations = new String[2];
+        configurations[0] = Configurations.getMazeSearchingAlgorithm().getName();
+        configurations[1] = String.valueOf(Configurations.getThreadPoolSize());
+        return configurations;
+    }
+
 
     @Override
     public void generateMaze(int rows, int cols) {
