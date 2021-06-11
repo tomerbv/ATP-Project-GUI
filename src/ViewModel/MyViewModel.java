@@ -3,6 +3,7 @@ package ViewModel;
 import Model.Direction;
 import Model.IModel;
 import algorithms.mazeGenerators.Maze;
+import algorithms.search.ASearchingAlgorithm;
 import algorithms.search.Solution;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -67,5 +68,11 @@ public class MyViewModel extends Observable implements Observer {
 
     public void load(Maze loadedMaze) {
         model.LoadMaze(loadedMaze);
+    }
+
+
+
+    public String[] getConfigurations() {
+        return model.getConfigurations();
     }
 }

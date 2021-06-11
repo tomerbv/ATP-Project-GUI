@@ -4,10 +4,12 @@ import Client.Client;
 import IO.MyDecompressorInputStream;
 import Server.Server;
 import algorithms.mazeGenerators.Maze;
+import algorithms.search.ASearchingAlgorithm;
 import algorithms.search.Solution;
 import Server.ServerStrategyGenerateMaze;
 import Server.ServerStrategySolveSearchProblem;
 import Client.IClientStrategy;
+import Server.Configurations;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -25,6 +27,8 @@ public class MyModel extends Observable implements IModel{
     private Server generateMazeServer, solveMazeServer;
     private ExecutorService threadPool;
 
+
+
     public MyModel() {
         characterRowPos = 1;
         characterColPos = 1;
@@ -33,13 +37,26 @@ public class MyModel extends Observable implements IModel{
         generateMazeServer.start();
         solveMazeServer.start();
         threadPool = Executors.newCachedThreadPool();
+        Configurations config = Configurations.getInstance();
+
+
+
     }
     
     public void Exit(){
         generateMazeServer.stop();
         solveMazeServer.stop();
         threadPool.shutdown();
-    } 
+    }
+
+    @Override
+    public String[] getConfigurations() {
+        String[] configurations = new String[2];
+        configurations[0] = Configurations.getMazeSearchingAlgorithm().getName();
+        configurations[1] = String.valueOf(Configurations.getThreadPoolSize());
+        return configurations;
+    }
+
 
     @Override
     public void generateMaze(int rows, int cols) {

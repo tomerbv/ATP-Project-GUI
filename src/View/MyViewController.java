@@ -85,12 +85,19 @@ public class MyViewController implements Observer, Initializable, IView{
 
 
     public void solveMaze(ActionEvent actionEvent) {
+
         if(viewModel.getMaze() == null){
             throwInfoAlert("Only a donkey jumps in the head.. Initialize a maze first");
         }
         else{
-            throwInfoAlert("Finding a route for you");
-            viewModel.solveMaze();
+            if(viewModel.getSolution()!=null){
+                throwInfoAlert("Maze already solved");
+
+            }
+            else {
+                throwInfoAlert("Finding a route for you");
+                viewModel.solveMaze();
+            }
         }
     }
 
@@ -315,11 +322,18 @@ public class MyViewController implements Observer, Initializable, IView{
             stage.setTitle("Porperties Settings");
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("Settings.fxml").openStream());
+
             Scene scene = new Scene(root, 400, 350);
             stage.setScene(scene);
+
             stage.initModality(Modality.APPLICATION_MODAL);
             if(mediaPlayer!=null)
                 mediaPlayer.stop();
+            String[] configuriations = new String[2];
+            configuriations=viewModel.getConfigurations();
+            SettingsController propertiescontroller = fxmlLoader.getController();
+            propertiescontroller.SetConfigurations(configuriations);
+
 
             stage.show();
         }
