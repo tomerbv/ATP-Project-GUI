@@ -24,9 +24,12 @@ public class MazeDisplay extends Canvas {
     private int height = 0;
     private int width = 0;
     private double zoomFactor = 1;
+    private double zoomDeviationX = 0;
+    private double zoomDeviationY = 0;
     private int playerRow = 0;
     private int playerCol = 0;
     private Image playerImage;
+    private volatile Object zoomLock = new Object();
 
     StringProperty imageFileNameWall = new SimpleStringProperty();
     StringProperty imageFileNameFloor = new SimpleStringProperty();
@@ -37,6 +40,7 @@ public class MazeDisplay extends Canvas {
     StringProperty imageFileNameRight = new SimpleStringProperty();
     StringProperty imageFileNameUp = new SimpleStringProperty();
     StringProperty imageFileNameDown = new SimpleStringProperty();
+    
 
     public String getImageFileNameLeft() {
         return imageFileNameLeft.get();
@@ -175,24 +179,22 @@ public class MazeDisplay extends Canvas {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-
+                double x = j * cellWidth + zoomDeviationX;
+                double y = i * cellHeight + zoomDeviationY;
                 if(maze.getGoalPosition().getRowIndex() == i && maze.getGoalPosition().getColumnIndex() == j){
-                    double x = j * cellWidth;
-                    double y = i * cellHeight;
                     if(FinishImage == null ) {
                         graphicsContext.setFill(Color.RED);
                         graphicsContext.fillRect(x, y, cellWidth, cellHeight);
                         graphicsContext.setFill(Color.DARKGRAY);
                     }
                     else
+                        graphicsContext.drawImage(FloorImage, x, y, cellWidth, cellHeight);
                         graphicsContext.drawImage(FinishImage, x, y, cellWidth, cellHeight);
 
                 }
 
                 else if(maze.GetPositionVal(i,j) == 1){
                     //if it is a wall:
-                    double x = j * cellWidth;
-                    double y = i * cellHeight;
                     if(WallImage == null )
                         graphicsContext.fillRect(x, y, cellWidth, cellHeight);
                     else
@@ -200,8 +202,6 @@ public class MazeDisplay extends Canvas {
 
                 }
                 else{
-                    double x = j * cellWidth;
-                    double y = i * cellHeight;
                     if(FloorImage == null)
                         graphicsContext.fillRect(x, y, cellWidth, cellHeight);
                     else
@@ -220,46 +220,20 @@ public class MazeDisplay extends Canvas {
     }
     public void movePlayer(Direction direction) {
         switch (direction) {
-            case UP -> {
-                UpdatePlayerImage(getImageFileNameUp());
-
-            }
-            case DOWN -> {
-                UpdatePlayerImage(getImageFileNameDown());
-
-            }
-            case LEFT -> {
-                UpdatePlayerImage(getImageFileNameLeft());
-
-            }
-            case RIGHT -> {
-                UpdatePlayerImage(getImageFileNameRight());
-
-            }
-
-            case UPRIGHT -> {
-                UpdatePlayerImage(getImageFileNameUp());
-
-
-            }
-            case DOWNRIGHT -> {
-                UpdatePlayerImage(getImageFileNameDown());
-
-            }
-            case UPLEFT -> {
-                UpdatePlayerImage(getImageFileNameUp());
-
-            }
-            case DOWNLEFT -> {
-                UpdatePlayerImage(getImageFileNameDown());
-
-            }
+            case UP ->        UpdatePlayerImage(getImageFileNameUp());
+            case DOWN ->      UpdatePlayerImage(getImageFileNameDown());
+            case LEFT ->      UpdatePlayerImage(getImageFileNameLeft());
+            case RIGHT ->     UpdatePlayerImage(getImageFileNameRight());
+            case UPRIGHT ->   UpdatePlayerImage(getImageFileNameUp());
+            case DOWNRIGHT -> UpdatePlayerImage(getImageFileNameDown());
+            case UPLEFT ->    UpdatePlayerImage(getImageFileNameUp());
+            case DOWNLEFT ->  UpdatePlayerImage(getImageFileNameDown());
         }
     }
 
     private void drawPlayer(GraphicsContext graphicsContext, double cellHeight, double cellWidth) {
-        double x = getPlayerCol() * cellWidth;
-        double y = getPlayerRow() * cellHeight;
+        double x = getPlayerCol() * cellWidth + zoomDeviationX;
+        double y = getPlayerRow() * cellHeight + zoomDeviationY;
         graphicsContext.setFill(Color.GREEN);
 
 
@@ -289,8 +263,8 @@ public class MazeDisplay extends Canvas {
             for (int i = 0; i < path.size(); i++) {
                 MazeState pathInd = (MazeState) path.get(i);
                 if(!(maze.getGoalPosition().getRowIndex() == pathInd.getPosition().getRowIndex() && maze.getGoalPosition().getColumnIndex() == pathInd.getPosition().getColumnIndex())){
-                    double x = pathInd.getPosition().getColumnIndex() * cellWidth;
-                    double y = pathInd.getPosition().getRowIndex() * cellHeight;
+                    double x = pathInd.getPosition().getColumnIndex() * cellWidth + zoomDeviationX;
+                    double y = pathInd.getPosition().getRowIndex() * cellHeight + zoomDeviationY;
                     graphicsContext.fillRoundRect(x + cellWidth/4, y + cellHeight/4, cellWidth/2, cellHeight/2, 5,5);
                 }
             }
@@ -303,15 +277,104 @@ public class MazeDisplay extends Canvas {
     }
 
     public void zoomIn() {
-        if(zoomFactor > 0.1)
-            zoomFactor -= 0.05;
+        synchronized (zoomLock){
+            if(zoomFactor > 0.1) {
+                zoomFactor -= 0.05;
+                zoomDeviationY = -((getHeight()/zoomFactor -(getHeight()))/2);
+                zoomDeviationX = -((getWidth() /zoomFactor -(getWidth()))/2);
+
+            }
+        }
     }
 
     public void zoomOut() {
-        if(zoomFactor < 1)
-            zoomFactor += 0.05;
+        synchronized (zoomLock){
+            if(zoomFactor < 1) {
+                zoomFactor += 0.05;
+                zoomDeviationY = -((getHeight()/zoomFactor -(getHeight()))/2);
+                zoomDeviationX = -((getWidth() /zoomFactor -(getWidth()))/2);
+            }
+        }
     }
 
 
+    public void moveZoom(Direction direction) {
+        synchronized (zoomLock){
+            switch (direction) {
+                case UP -> {
+                    if(-zoomDeviationY > getCellHeight())
+                        zoomDeviationY += getCellHeight();
+                    else
+                        zoomDeviationY = 0;
+                }
+                case DOWN -> {
+                    if(zoomDeviationY - getCellHeight() > -((getHeight()/zoomFactor) -(getHeight())))
+                        zoomDeviationY -= getCellHeight();
+                    else
+                        zoomDeviationY = -((getHeight()/zoomFactor) -(getHeight()));
 
+
+                }
+                case LEFT -> {
+                    if(-zoomDeviationX > getCellWidth())
+                        zoomDeviationX += getCellWidth();
+                    else
+                        zoomDeviationX = 0;
+
+                }
+                case RIGHT -> {
+                    if(zoomDeviationX - getCellWidth() > -((getWidth()/zoomFactor) -(getWidth())))
+                        zoomDeviationX -= getCellWidth();
+                    else
+                        zoomDeviationX = -((getWidth()/zoomFactor) -(getWidth()));
+
+                }
+                case UPRIGHT -> {
+                    if(-zoomDeviationY > getCellHeight())
+                        zoomDeviationY += getCellHeight();
+                    else
+                        zoomDeviationY = 0;
+                    if(zoomDeviationX - getCellWidth() > -((getWidth()/zoomFactor) -(getWidth())))
+                        zoomDeviationX -= getCellWidth();
+                    else
+                        zoomDeviationX = -((getWidth()/zoomFactor) -(getWidth()));
+                }
+                case UPLEFT -> {
+                    if(-zoomDeviationY > getCellHeight())
+                        zoomDeviationY += getCellHeight();
+                    else
+                        zoomDeviationY = 0;
+                    if(-zoomDeviationX > getCellWidth())
+                        zoomDeviationX += getCellWidth();
+                    else
+                        zoomDeviationX = 0;
+
+                }
+                case DOWNLEFT -> {
+                    if(zoomDeviationY - getCellHeight() > -((getHeight()/zoomFactor) -(getHeight())))
+                        zoomDeviationY -= getCellHeight();
+                    else
+                        zoomDeviationY = -((getHeight()/zoomFactor) -(getHeight()));
+                    if(-zoomDeviationX > getCellWidth())
+                        zoomDeviationX += getCellWidth();
+                    else
+                        zoomDeviationX = 0;
+                }
+                case DOWNRIGHT -> {
+                    if(zoomDeviationY - getCellHeight() > -((getHeight()/zoomFactor) -(getHeight())))
+                        zoomDeviationY -= getCellHeight();
+                    else
+                        zoomDeviationY = -((getHeight()/zoomFactor) -(getHeight()));
+                    if(zoomDeviationX - getCellWidth() > -((getWidth()/zoomFactor) -(getWidth())))
+                        zoomDeviationX -= getCellWidth();
+                    else
+                        zoomDeviationX = -((getWidth()/zoomFactor) -(getWidth()));
+                }
+                case PLUS -> zoomIn();
+                case MINUS -> zoomOut();
+            }
+            draw();
+        }
+
+    }
 }

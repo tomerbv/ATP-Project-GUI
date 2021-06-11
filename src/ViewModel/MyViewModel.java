@@ -68,4 +68,5 @@ public class MyViewModel extends Observable implements Observer {
     public void load(Maze loadedMaze) {
         model.LoadMaze(loadedMaze);
     }
+
 }

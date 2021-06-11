@@ -39,7 +39,7 @@ public class MyModel extends Observable implements IModel{
         generateMazeServer.stop();
         solveMazeServer.stop();
         threadPool.shutdown();
-    } 
+    }
 
     @Override
     public void generateMaze(int rows, int cols) {
@@ -73,7 +73,6 @@ public class MyModel extends Observable implements IModel{
 
     @Override
     public void LoadMaze(Maze maze){
-
         setMaze(maze);
     }
 

@@ -1,6 +1,7 @@
 package View;
 
 import Model.Direction;
+import Server.Configurations;
 import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
@@ -26,10 +27,7 @@ import javafx.stage.*;
 
 import java.io.*;
 import java.net.URL;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MyViewController implements Observer, Initializable, IView{
     public MyViewModel viewModel;
@@ -77,11 +75,23 @@ public class MyViewController implements Observer, Initializable, IView{
     }
 
     public void generateMaze(ActionEvent actionEvent) {
-        int rows = Integer.valueOf(textField_mazeRows.getText());
-        int cols = Integer.valueOf(textField_mazeColumns.getText());
+        String row = textField_mazeRows.getText();
+        String col = textField_mazeColumns.getText();
+        if(!((row.matches("[0-9]+" ) && row.length() > 0 && (col.matches("[0-9]+" ) && col.length() > 0))))
+            throwInfoAlert("Maze row and column values have to be positive integers greater than 2");
+        else{
+            int rows = Integer.valueOf(row);
+            int cols = Integer.valueOf(col);
+            if(rows < 3 || cols < 3)
+                throwInfoAlert("Maze row and column values have to be positive integers greater than 2");
+            else{
+                viewModel.generateMaze(rows, cols);
+            }
 
-        viewModel.generateMaze(rows, cols);
-    }
+
+        }
+        }
+
 
 
     public void solveMaze(ActionEvent actionEvent) {
@@ -97,7 +107,7 @@ public class MyViewController implements Observer, Initializable, IView{
 
     public void keyPressed(KeyEvent keyEvent) {
         Direction direction;
-        switch (keyEvent.getCode()){
+        switch (keyEvent.getCode()) {
             case UP, NUMPAD8 -> direction = Direction.UP;
             case DOWN, NUMPAD2 -> direction = Direction.DOWN;
             case LEFT, NUMPAD4 -> direction = Direction.LEFT;
@@ -106,17 +116,26 @@ public class MyViewController implements Observer, Initializable, IView{
             case NUMPAD7 -> direction = Direction.UPLEFT;
             case NUMPAD1 -> direction = Direction.DOWNLEFT;
             case NUMPAD3 -> direction = Direction.DOWNRIGHT;
+            case ADD -> direction = Direction.PLUS;
+            case SUBTRACT -> direction = Direction.MINUS;
             default -> {
-                // no need to move the player...
+                // null direction value
                 return;
             }
         }
-
-        mazeDisplay.movePlayer(direction);
-        viewModel.movePlayer(direction);
+        if(keyEvent.isControlDown()){
+            mazeDisplay.moveZoom(direction);
+        }
+        else if (direction != null){
+            mazeDisplay.movePlayer(direction);
+            viewModel.movePlayer(direction);
+            playMoveSound();
+            }
         keyEvent.consume();
-        playMoveSound();
+
     }
+
+
 
     private void playMoveSound() {
         Media sound = new Media(this.getClass().getResource("/music/movesound.wav").toString());
@@ -151,16 +170,12 @@ public class MyViewController implements Observer, Initializable, IView{
             stage.setTitle("You Have Won!");
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("YouWin.fxml").openStream());
-            Scene scene = new Scene(root, 700, 400);
+            Scene scene = new Scene(root, 750, 550);
             stage.setOnCloseRequest(WindowEvent -> {
                 ExitYouWin(stage);
                 WindowEvent.consume();});
             stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
-
-
-
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -320,7 +335,6 @@ public class MyViewController implements Observer, Initializable, IView{
             stage.initModality(Modality.APPLICATION_MODAL);
             if(mediaPlayer!=null)
                 mediaPlayer.stop();
-
             stage.show();
         }
         catch (Exception e){

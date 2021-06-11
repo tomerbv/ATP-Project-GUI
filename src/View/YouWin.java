@@ -13,17 +13,14 @@ import java.util.ResourceBundle;
 public class YouWin implements Initializable {
 
     public ImageView CatDrummerGif;
-    public MediaPlayer WinmediaPlayer;
-
+    public ImageView YouWinText;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try{
+            Image WinText = new Image(this.getClass().getResourceAsStream("/images/youwin.png"));
+            YouWinText.setImage(WinText);
             Image gif = new Image(this.getClass().getResourceAsStream("/images/catdrummer.gif"));
             CatDrummerGif.setImage(gif);
-
-
-
-
         }
         catch (Exception e){
             System.out.println(e.getMessage());
