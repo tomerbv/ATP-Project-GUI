@@ -89,10 +89,8 @@ public class MyViewController implements Observer, Initializable, IView{
             else{
                 viewModel.generateMaze(rows, cols);
             }
-
-
         }
-        }
+    }
 
 
 
