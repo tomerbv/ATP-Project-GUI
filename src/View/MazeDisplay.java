@@ -11,6 +11,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 
@@ -189,7 +192,7 @@ public class MazeDisplay extends Canvas {
                     }
                     else
                         graphicsContext.drawImage(FloorImage, x, y, cellWidth, cellHeight);
-                        graphicsContext.drawImage(FinishImage, x, y, cellWidth, cellHeight);
+                        graphicsContext.drawImage(FinishImage, x + cellWidth*0.1, y + cellHeight*0.1, cellWidth*0.8, cellHeight*0.8);
 
                 }
 
@@ -272,6 +275,14 @@ public class MazeDisplay extends Canvas {
         }
     }
 
+    public void setNewPokemon() {
+        String curr = imageFileNameFinish.getValue();
+        if(curr.contains("Charizard"))
+            this.imageFileNameFinish.set("./resources/images/Mewtwo.png");
+        if(curr.contains("Mewtwo"))
+            this.imageFileNameFinish.set("./resources/images/Pikachu.png");
+    }
+
     public void resize() {
         draw();
     }
@@ -295,6 +306,14 @@ public class MazeDisplay extends Canvas {
                 zoomDeviationX = -((getWidth() /zoomFactor -(getWidth()))/2);
             }
         }
+    }
+
+    public double getZoomDeviationX() {
+        return zoomDeviationX;
+    }
+
+    public double getZoomDeviationY() {
+        return zoomDeviationY;
     }
 
 
@@ -377,4 +396,5 @@ public class MazeDisplay extends Canvas {
         }
 
     }
+
 }

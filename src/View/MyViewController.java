@@ -3,12 +3,9 @@ package View;
 import Model.Direction;
 import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
-import algorithms.mazeGenerators.Position;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -17,9 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.*;
@@ -38,8 +33,14 @@ public class MyViewController implements Observer, Initializable, IView{
     public TextField textField_mazeColumns;
     public Label playerRow;
     public Label playerCol;
+    int goalRow;
+    int goalColumn;
     public double WidthRatio = 820;
     public double HeightRatio = 770;
+    private double mouseDragStartY;
+    private double mouseDragStartX;
+
+
     public Thread musicThread;
     public volatile boolean stop;
     public MediaPlayer mediaPlayer;
@@ -48,6 +49,7 @@ public class MyViewController implements Observer, Initializable, IView{
     StringProperty updatePlayerCol = new SimpleStringProperty();
     public MediaPlayer WinmediaPlayer;
     private MazeDisplay mazeDisplayer;
+
 
     public void setViewModel(MyViewModel viewModel) {
         this.viewModel = viewModel;
@@ -112,32 +114,34 @@ public class MyViewController implements Observer, Initializable, IView{
 
 
     public void keyPressed(KeyEvent keyEvent) {
-        Direction direction;
-        switch (keyEvent.getCode()){
-            case UP, NUMPAD8 -> direction = Direction.UP;
-            case DOWN, NUMPAD2 -> direction = Direction.DOWN;
-            case LEFT, NUMPAD4 -> direction = Direction.LEFT;
-            case RIGHT, NUMPAD6 -> direction = Direction.RIGHT;
-            case NUMPAD9 -> direction = Direction.UPRIGHT;
-            case NUMPAD7 -> direction = Direction.UPLEFT;
-            case NUMPAD1 -> direction = Direction.DOWNLEFT;
-            case NUMPAD3 -> direction = Direction.DOWNRIGHT;
-            case ADD -> direction = Direction.PLUS;
-            case SUBTRACT -> direction = Direction.MINUS;
-            default -> {
-                // null direction value
-                return;
+        if(!(viewModel.getMaze() == null)) {
+            Direction direction;
+            switch (keyEvent.getCode()) {
+                case UP, NUMPAD8 -> direction = Direction.UP;
+                case DOWN, NUMPAD2 -> direction = Direction.DOWN;
+                case LEFT, NUMPAD4 -> direction = Direction.LEFT;
+                case RIGHT, NUMPAD6 -> direction = Direction.RIGHT;
+                case NUMPAD9 -> direction = Direction.UPRIGHT;
+                case NUMPAD7 -> direction = Direction.UPLEFT;
+                case NUMPAD1 -> direction = Direction.DOWNLEFT;
+                case NUMPAD3 -> direction = Direction.DOWNRIGHT;
+                case ADD -> direction = Direction.PLUS;
+                case SUBTRACT -> direction = Direction.MINUS;
+                default -> {
+                    // null direction value
+                    return;
+                }
             }
-        }
-        if(keyEvent.isControlDown()){
-            mazeDisplay.moveZoom(direction);
-        }
-        else if (direction != null){
-            mazeDisplay.movePlayer(direction);
-            viewModel.movePlayer(direction);
-            playMoveSound();
+            if (keyEvent.isControlDown()) {
+                mazeDisplay.moveZoom(direction);
+            } else if (direction != null) {
+                mazeDisplay.movePlayer(direction);
+                viewModel.movePlayer(direction);
+                playMoveSound();
             }
-        keyEvent.consume();
+            keyEvent.consume();
+        }
+
 
     }
 
@@ -151,11 +155,7 @@ public class MyViewController implements Observer, Initializable, IView{
     }
 
     public void setPlayerPosition(int row, int col){
-        mazeDisplay.setPlayerPosition(row, col);
-        setUpdatePlayerRow(row);
-        setUpdatePlayerCol(col);
-        Maze maze = viewModel.getMaze();
-        if(maze.getGoalPosition().getRowIndex() == row && maze.getGoalPosition().getColumnIndex() == col) {
+        if(goalRow == row && goalColumn == col) {
             stop = true;
             if(!(mediaPlayer == null))
                 mediaPlayer.stop();
@@ -165,6 +165,11 @@ public class MyViewController implements Observer, Initializable, IView{
             mediaPlayer.play();
             YouWin();
         }
+        mazeDisplay.setPlayerPosition(row, col);
+        setUpdatePlayerRow(row);
+        setUpdatePlayerCol(col);
+
+
 
     }
 
@@ -182,9 +187,6 @@ public class MyViewController implements Observer, Initializable, IView{
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
 
-
-
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -196,29 +198,81 @@ public class MyViewController implements Observer, Initializable, IView{
         alert.setHeaderText("Would you like to go for another or did you have enough?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
+            mazeDisplay.setNewPokemon();
             NewMaze(new ActionEvent());
             stage.close();
             mediaPlayer.stop();
+
         }
         else
             Exit();
 
     }
 
-
-
     public void mouseClicked(MouseEvent mouseEvent) {
-        mazeDisplay.requestFocus();
-        viewModel.movePlayer(mouseEvent);
+        if(!(viewModel.getMaze() == null)) {
+            mazeDisplay.requestFocus();
+        }
+    }
+
+    public void startDrag(MouseEvent mouseEvent) {
+        if(!(viewModel.getMaze() == null)) {
+            this.mouseDragStartX = mouseEvent.getX();
+            this.mouseDragStartY = mouseEvent.getY();
+        }
+    }
+
+    private boolean isDragOnPlayer(double cellWidth, double cellHeight){
+        if(!(viewModel.getMaze() == null)){
+            if(mouseDragStartX - mazeDisplay.getZoomDeviationX() >= (mazeDisplay.getPlayerCol()*cellWidth)  && mouseDragStartX <= (mazeDisplay.getPlayerCol()*cellWidth) + cellWidth)
+                if(mouseDragStartY - mazeDisplay.getZoomDeviationY() >= (mazeDisplay.getPlayerRow()*cellHeight)  && mouseDragStartY <= (mazeDisplay.getPlayerRow()*cellHeight) + cellHeight)
+                    return true;
+        }
+        return false;
+    }
+
+    public void Drag(MouseEvent mouseEvent) {
+        if(!(viewModel.getMaze() == null)){
+            double cellWidth = mazeDisplay.getCellWidth();
+            double cellHeight = mazeDisplay.getCellHeight();
+            if(isDragOnPlayer(cellWidth, cellHeight)){
+                if (mouseEvent.getX() - mouseDragStartX >= cellWidth/2) {
+                    mazeDisplay.movePlayer(Direction.RIGHT);
+                    viewModel.movePlayer(Direction.RIGHT);
+                    playMoveSound();
+                    mouseDragStartX += cellWidth;
+                }
+                if (mouseEvent.getX() - mouseDragStartX <= -(cellWidth / 2)) {
+                    mazeDisplay.movePlayer(Direction.LEFT);
+                    viewModel.movePlayer(Direction.LEFT);
+                    playMoveSound();
+                    mouseDragStartX -= cellWidth;
+                }
+                if (mouseEvent.getY() - mouseDragStartY >= cellHeight/2) {
+                    mazeDisplay.movePlayer(Direction.DOWN);
+                    viewModel.movePlayer(Direction.DOWN);
+                    playMoveSound();
+                    mouseDragStartY += cellHeight;
+                }
+                if (mouseEvent.getY() - mouseDragStartY <= -(cellHeight / 2)) {
+                    mazeDisplay.movePlayer(Direction.UP);
+                    viewModel.movePlayer(Direction.UP);
+                    playMoveSound();
+                    mouseDragStartY -= cellHeight;
+                }
+            }
+        }
     }
 
     public void Scrolled(ScrollEvent scrollEvent) {
-        if(scrollEvent.isControlDown()){
-            if(scrollEvent.getDeltaY() > 0)
-                this.mazeDisplay.zoomIn();
-            else
-                this.mazeDisplay.zoomOut();
-            AdjustSize();
+        if(!(viewModel.getMaze() == null)){
+            if(scrollEvent.isControlDown()){
+                if(scrollEvent.getDeltaY() > 0)
+                    this.mazeDisplay.zoomIn();
+                else
+                    this.mazeDisplay.zoomOut();
+                AdjustSize();
+            }
         }
     }
 
@@ -243,6 +297,8 @@ public class MyViewController implements Observer, Initializable, IView{
     }
 
     private void mazeGenerated() {
+        goalRow = viewModel.getMaze().getGoalPosition().getRowIndex();
+        goalColumn = viewModel.getMaze().getGoalPosition().getColumnIndex();
         mazeDisplay.drawMaze(viewModel.getMaze());
     }
 
@@ -298,13 +354,11 @@ public class MyViewController implements Observer, Initializable, IView{
                 else{
                     throwInfoAlert("Error Saving");
                 }
-
         }
             catch (Exception e){
                 throwInfoAlert("Could not save the specific file");
             }
         }
-
     }
 
     public void LoadMaze(ActionEvent actionEvent) {
@@ -443,4 +497,7 @@ public class MyViewController implements Observer, Initializable, IView{
         stop = true;
         mediaPlayer.stop();
     }
+
+
+
 }

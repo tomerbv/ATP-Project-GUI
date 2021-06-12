@@ -14,9 +14,14 @@ public class YouWin implements Initializable {
 
     public ImageView CatDrummerGif;
     public ImageView YouWinText;
+    public ImageView RightDrake;
+    public ImageView LeftDrake;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try{
+            Image PokeDrake = new Image(this.getClass().getResourceAsStream("/images/PokeDrake.gif"));
+            RightDrake.setImage(PokeDrake);
+            LeftDrake.setImage(PokeDrake);
             Image WinText = new Image(this.getClass().getResourceAsStream("/images/youwin.png"));
             YouWinText.setImage(WinText);
             Image gif = new Image(this.getClass().getResourceAsStream("/images/catdrummer.gif"));
