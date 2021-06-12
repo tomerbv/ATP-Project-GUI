@@ -8,6 +8,7 @@ import algorithms.search.Solution;
 import Server.ServerStrategyGenerateMaze;
 import Server.ServerStrategySolveSearchProblem;
 import Client.IClientStrategy;
+import Server.Configurations;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -32,8 +33,6 @@ public class MyModel extends Observable implements IModel{
         characterColPos = 1;
         generateMazeServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
         solveMazeServer = new Server(5401,1000, new ServerStrategySolveSearchProblem());
-        generateMazeServer.start();
-        solveMazeServer.start();
         threadPool = Executors.newCachedThreadPool();
         Configurations config = Configurations.getInstance();
 
@@ -53,6 +52,18 @@ public class MyModel extends Observable implements IModel{
         configurations[0] = Configurations.getMazeSearchingAlgorithm().getName();
         configurations[1] = String.valueOf(Configurations.getThreadPoolSize());
         return configurations;
+    }
+
+    @Override
+    public void setConfigurations(String numofthreads, String searchingAlgo) {
+        Configurations.setProp(Integer.valueOf(numofthreads),"MyMazeGenerator",searchingAlgo);
+    }
+
+    @Override
+    public void Start() {
+        generateMazeServer.start();
+        solveMazeServer.start();
+
     }
 
 

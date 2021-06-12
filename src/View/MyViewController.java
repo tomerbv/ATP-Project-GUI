@@ -104,7 +104,7 @@ public class MyViewController implements Observer, Initializable, IView{
 
             }
             else {
-                throwInfoAlert("Finding a route for you");
+                throwInfoAlert("Finding a route for you maze was solved with the algortihm " + viewModel.getConfigurations()[0] + "and" + viewModel.getConfigurations()[1]+ "threads");
                 viewModel.solveMaze();
             }
         }
@@ -339,7 +339,7 @@ public class MyViewController implements Observer, Initializable, IView{
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("Settings.fxml").openStream());
 
-            Scene scene = new Scene(root, 400, 350);
+            Scene scene = new Scene(root, 500, 400);
             stage.setScene(scene);
 
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -348,9 +348,8 @@ public class MyViewController implements Observer, Initializable, IView{
             String[] configuriations = new String[2];
             configuriations=viewModel.getConfigurations();
             SettingsController propertiescontroller = fxmlLoader.getController();
+            propertiescontroller.setViewModel(this.viewModel);
             propertiescontroller.SetConfigurations(configuriations);
-
-
             stage.show();
         }
         catch (Exception e){
