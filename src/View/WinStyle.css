@@ -1,5 +1,5 @@
 .root {
-    -fx-background-image: url("//resources/images/background.png");
+    -fx-background-color: linear-gradient(#ffffff, #2a5058);
     -fx-background-repeat: stretch;
     -fx-background-size: 1000 800;
     -fx-background-position: center center;

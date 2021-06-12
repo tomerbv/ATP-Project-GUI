@@ -40,7 +40,7 @@ public class MyViewController implements Observer, Initializable, IView{
     private double mouseDragStartY;
     private double mouseDragStartX;
 
-
+    private boolean menuLocker;
     public Thread musicThread;
     public volatile boolean stop;
     public MediaPlayer mediaPlayer;
@@ -49,6 +49,7 @@ public class MyViewController implements Observer, Initializable, IView{
     StringProperty updatePlayerCol = new SimpleStringProperty();
     public MediaPlayer WinmediaPlayer;
     private MazeDisplay mazeDisplayer;
+
 
 
     public void setViewModel(MyViewModel viewModel) {
@@ -79,6 +80,8 @@ public class MyViewController implements Observer, Initializable, IView{
     }
 
     public void generateMaze(ActionEvent actionEvent) {
+        if(menuLocker)
+            return;
         String row = textField_mazeRows.getText();
         String col = textField_mazeColumns.getText();
         if(!((row.matches("[0-9]+" ) && row.length() > 0 && (col.matches("[0-9]+" ) && col.length() > 0))))
@@ -97,6 +100,8 @@ public class MyViewController implements Observer, Initializable, IView{
 
 
     public void solveMaze(ActionEvent actionEvent) {
+        if(menuLocker)
+            return;
         if(viewModel.getMaze() == null){
             throwInfoAlert("Only a donkey jumps in the head.. Initialize a maze first");
         }
@@ -114,6 +119,8 @@ public class MyViewController implements Observer, Initializable, IView{
 
 
     public void keyPressed(KeyEvent keyEvent) {
+        if(menuLocker)
+            return;
         if(!(viewModel.getMaze() == null)) {
             Direction direction;
             switch (keyEvent.getCode()) {
@@ -210,12 +217,16 @@ public class MyViewController implements Observer, Initializable, IView{
     }
 
     public void mouseClicked(MouseEvent mouseEvent) {
+        if(menuLocker)
+            return;
         if(!(viewModel.getMaze() == null)) {
             mazeDisplay.requestFocus();
         }
     }
 
     public void startDrag(MouseEvent mouseEvent) {
+        if(menuLocker)
+            return;
         if(!(viewModel.getMaze() == null)) {
             this.mouseDragStartX = mouseEvent.getX();
             this.mouseDragStartY = mouseEvent.getY();
@@ -232,6 +243,8 @@ public class MyViewController implements Observer, Initializable, IView{
     }
 
     public void Drag(MouseEvent mouseEvent) {
+        if(menuLocker)
+            return;
         if(!(viewModel.getMaze() == null)){
             double cellWidth = mazeDisplay.getCellWidth();
             double cellHeight = mazeDisplay.getCellHeight();
@@ -265,6 +278,8 @@ public class MyViewController implements Observer, Initializable, IView{
     }
 
     public void Scrolled(ScrollEvent scrollEvent) {
+        if(menuLocker)
+            return;
         if(!(viewModel.getMaze() == null)){
             if(scrollEvent.isControlDown()){
                 if(scrollEvent.getDeltaY() > 0)
@@ -332,6 +347,7 @@ public class MyViewController implements Observer, Initializable, IView{
     }
 
     public void SaveMaze(ActionEvent actionEvent) {
+        menuLocker = true;
         if(viewModel.getMaze() == null){
             throwInfoAlert("A Maze has yet to be initialized");
         }
@@ -359,9 +375,11 @@ public class MyViewController implements Observer, Initializable, IView{
                 throwInfoAlert("Could not save the specific file");
             }
         }
+        menuLocker = false;
     }
 
     public void LoadMaze(ActionEvent actionEvent) {
+        menuLocker = true;
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Load Maze");
@@ -383,10 +401,12 @@ public class MyViewController implements Observer, Initializable, IView{
         catch (Exception e){
             throwInfoAlert("Could not load file");
         }
+        menuLocker = false;
     }
 
 
     public void OpenProperties(ActionEvent actionEvent) {
+        menuLocker = true;
         try {
             Stage stage = new Stage();
             stage.setTitle("Porperties Settings");
@@ -409,7 +429,7 @@ public class MyViewController implements Observer, Initializable, IView{
         catch (Exception e){
             throwInfoAlert("could not open Settings scene");
         }
-
+        menuLocker = false;
     }
     public void listenToStageExit(Stage primaryStage) {
         primaryStage.setOnCloseRequest(WindowEvent -> {
@@ -423,6 +443,7 @@ public class MyViewController implements Observer, Initializable, IView{
     }
 
     private void Exit() {
+        menuLocker = true;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Exit");
         alert.setHeaderText("Are you sure?");
@@ -431,9 +452,11 @@ public class MyViewController implements Observer, Initializable, IView{
             viewModel.Exit();
             System.exit(0);
         }
+        menuLocker = false;
     }
 
     public void About(ActionEvent actionEvent) {
+        menuLocker = true;
         try {
             Stage stage = new Stage();
             stage.setTitle("About");
@@ -447,13 +470,15 @@ public class MyViewController implements Observer, Initializable, IView{
         catch (Exception e) {
             e.printStackTrace();
         }
-
+        menuLocker = false;
 
     }
 
 
     public void Rules(ActionEvent actionEvent) {
+        menuLocker = true;
         try {
+            this.menuLocker = true;
             Stage stage = new Stage();
             stage.setTitle("Rules");
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -466,6 +491,7 @@ public class MyViewController implements Observer, Initializable, IView{
         catch (Exception e) {
             e.printStackTrace();
         }
+        menuLocker = false;
     }
 
     public void playAudio(ActionEvent actionEvent) {
