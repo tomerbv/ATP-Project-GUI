@@ -1,6 +1,11 @@
 .root {
-    -fx-background-color: bisque;
+    -fx-background-image: url("//resources/images/background.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 1000 800;
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
 }
+
 
 Button {
     -fx-text-fill: white;

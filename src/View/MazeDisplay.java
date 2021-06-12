@@ -397,10 +397,4 @@ public class MazeDisplay extends Canvas {
 
     }
 
-    public void mouseMove(MouseEvent mouseEvent) {
-        System.out.println("YOYOYOYOYOO");
-        }
-
-
-
 }

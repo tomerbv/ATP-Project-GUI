@@ -114,32 +114,34 @@ public class MyViewController implements Observer, Initializable, IView{
 
 
     public void keyPressed(KeyEvent keyEvent) {
-        Direction direction;
-        switch (keyEvent.getCode()){
-            case UP, NUMPAD8 -> direction = Direction.UP;
-            case DOWN, NUMPAD2 -> direction = Direction.DOWN;
-            case LEFT, NUMPAD4 -> direction = Direction.LEFT;
-            case RIGHT, NUMPAD6 -> direction = Direction.RIGHT;
-            case NUMPAD9 -> direction = Direction.UPRIGHT;
-            case NUMPAD7 -> direction = Direction.UPLEFT;
-            case NUMPAD1 -> direction = Direction.DOWNLEFT;
-            case NUMPAD3 -> direction = Direction.DOWNRIGHT;
-            case ADD -> direction = Direction.PLUS;
-            case SUBTRACT -> direction = Direction.MINUS;
-            default -> {
-                // null direction value
-                return;
+        if(!(viewModel.getMaze() == null)) {
+            Direction direction;
+            switch (keyEvent.getCode()) {
+                case UP, NUMPAD8 -> direction = Direction.UP;
+                case DOWN, NUMPAD2 -> direction = Direction.DOWN;
+                case LEFT, NUMPAD4 -> direction = Direction.LEFT;
+                case RIGHT, NUMPAD6 -> direction = Direction.RIGHT;
+                case NUMPAD9 -> direction = Direction.UPRIGHT;
+                case NUMPAD7 -> direction = Direction.UPLEFT;
+                case NUMPAD1 -> direction = Direction.DOWNLEFT;
+                case NUMPAD3 -> direction = Direction.DOWNRIGHT;
+                case ADD -> direction = Direction.PLUS;
+                case SUBTRACT -> direction = Direction.MINUS;
+                default -> {
+                    // null direction value
+                    return;
+                }
             }
-        }
-        if(keyEvent.isControlDown()){
-            mazeDisplay.moveZoom(direction);
-        }
-        else if (direction != null){
-            mazeDisplay.movePlayer(direction);
-            viewModel.movePlayer(direction);
-            playMoveSound();
+            if (keyEvent.isControlDown()) {
+                mazeDisplay.moveZoom(direction);
+            } else if (direction != null) {
+                mazeDisplay.movePlayer(direction);
+                viewModel.movePlayer(direction);
+                playMoveSound();
             }
-        keyEvent.consume();
+            keyEvent.consume();
+        }
+
 
     }
 
@@ -208,59 +210,69 @@ public class MyViewController implements Observer, Initializable, IView{
     }
 
     public void mouseClicked(MouseEvent mouseEvent) {
-        mazeDisplay.requestFocus();
+        if(!(viewModel.getMaze() == null)) {
+            mazeDisplay.requestFocus();
+        }
     }
 
     public void startDrag(MouseEvent mouseEvent) {
-        this.mouseDragStartX = mouseEvent.getX();
-        this.mouseDragStartY = mouseEvent.getY();
+        if(!(viewModel.getMaze() == null)) {
+            this.mouseDragStartX = mouseEvent.getX();
+            this.mouseDragStartY = mouseEvent.getY();
+        }
     }
 
     private boolean isDragOnPlayer(double cellWidth, double cellHeight){
-        if(mouseDragStartX - mazeDisplay.getZoomDeviationX() >= (mazeDisplay.getPlayerCol()*cellWidth)  && mouseDragStartX <= (mazeDisplay.getPlayerCol()*cellWidth) + cellWidth)
-            if(mouseDragStartY - mazeDisplay.getZoomDeviationY() >= (mazeDisplay.getPlayerRow()*cellHeight)  && mouseDragStartY <= (mazeDisplay.getPlayerRow()*cellHeight) + cellHeight)
-                return true;
+        if(!(viewModel.getMaze() == null)){
+            if(mouseDragStartX - mazeDisplay.getZoomDeviationX() >= (mazeDisplay.getPlayerCol()*cellWidth)  && mouseDragStartX <= (mazeDisplay.getPlayerCol()*cellWidth) + cellWidth)
+                if(mouseDragStartY - mazeDisplay.getZoomDeviationY() >= (mazeDisplay.getPlayerRow()*cellHeight)  && mouseDragStartY <= (mazeDisplay.getPlayerRow()*cellHeight) + cellHeight)
+                    return true;
+        }
         return false;
     }
 
     public void Drag(MouseEvent mouseEvent) {
-        double cellWidth = mazeDisplay.getCellWidth();
-        double cellHeight = mazeDisplay.getCellHeight();
-        if(isDragOnPlayer(cellWidth, cellHeight)){
-            if (mouseEvent.getX() - mouseDragStartX >= cellWidth/2) {
-                mazeDisplay.movePlayer(Direction.RIGHT);
-                viewModel.movePlayer(Direction.RIGHT);
-                playMoveSound();
-                mouseDragStartX += cellWidth;
-            }
-            if (mouseEvent.getX() - mouseDragStartX <= -(cellWidth / 2)) {
-                mazeDisplay.movePlayer(Direction.LEFT);
-                viewModel.movePlayer(Direction.LEFT);
-                playMoveSound();
-                mouseDragStartX -= cellWidth;
-            }
-            if (mouseEvent.getY() - mouseDragStartY >= cellHeight/2) {
-                mazeDisplay.movePlayer(Direction.DOWN);
-                viewModel.movePlayer(Direction.DOWN);
-                playMoveSound();
-                mouseDragStartY += cellHeight;
-            }
-            if (mouseEvent.getY() - mouseDragStartY <= -(cellHeight / 2)) {
-                mazeDisplay.movePlayer(Direction.UP);
-                viewModel.movePlayer(Direction.UP);
-                playMoveSound();
-                mouseDragStartY -= cellHeight;
+        if(!(viewModel.getMaze() == null)){
+            double cellWidth = mazeDisplay.getCellWidth();
+            double cellHeight = mazeDisplay.getCellHeight();
+            if(isDragOnPlayer(cellWidth, cellHeight)){
+                if (mouseEvent.getX() - mouseDragStartX >= cellWidth/2) {
+                    mazeDisplay.movePlayer(Direction.RIGHT);
+                    viewModel.movePlayer(Direction.RIGHT);
+                    playMoveSound();
+                    mouseDragStartX += cellWidth;
+                }
+                if (mouseEvent.getX() - mouseDragStartX <= -(cellWidth / 2)) {
+                    mazeDisplay.movePlayer(Direction.LEFT);
+                    viewModel.movePlayer(Direction.LEFT);
+                    playMoveSound();
+                    mouseDragStartX -= cellWidth;
+                }
+                if (mouseEvent.getY() - mouseDragStartY >= cellHeight/2) {
+                    mazeDisplay.movePlayer(Direction.DOWN);
+                    viewModel.movePlayer(Direction.DOWN);
+                    playMoveSound();
+                    mouseDragStartY += cellHeight;
+                }
+                if (mouseEvent.getY() - mouseDragStartY <= -(cellHeight / 2)) {
+                    mazeDisplay.movePlayer(Direction.UP);
+                    viewModel.movePlayer(Direction.UP);
+                    playMoveSound();
+                    mouseDragStartY -= cellHeight;
+                }
             }
         }
     }
 
     public void Scrolled(ScrollEvent scrollEvent) {
-        if(scrollEvent.isControlDown()){
-            if(scrollEvent.getDeltaY() > 0)
-                this.mazeDisplay.zoomIn();
-            else
-                this.mazeDisplay.zoomOut();
-            AdjustSize();
+        if(!(viewModel.getMaze() == null)){
+            if(scrollEvent.isControlDown()){
+                if(scrollEvent.getDeltaY() > 0)
+                    this.mazeDisplay.zoomIn();
+                else
+                    this.mazeDisplay.zoomOut();
+                AdjustSize();
+            }
         }
     }
 
