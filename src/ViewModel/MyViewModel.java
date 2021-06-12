@@ -50,6 +50,7 @@ public class MyViewModel extends Observable implements Observer {
 
     public void movePlayer(MouseEvent mouseEvent) {
         Direction direction;
+
     }
 
     public void solveMaze(){

@@ -8,7 +8,7 @@ import algorithms.search.Solution;
 import Server.ServerStrategyGenerateMaze;
 import Server.ServerStrategySolveSearchProblem;
 import Client.IClientStrategy;
-
+import Server.Configurations;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;

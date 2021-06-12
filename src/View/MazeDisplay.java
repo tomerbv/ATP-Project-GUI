@@ -11,6 +11,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 
@@ -189,7 +192,7 @@ public class MazeDisplay extends Canvas {
                     }
                     else
                         graphicsContext.drawImage(FloorImage, x, y, cellWidth, cellHeight);
-                        graphicsContext.drawImage(FinishImage, x, y, cellWidth, cellHeight);
+                        graphicsContext.drawImage(FinishImage, x + cellWidth*0.1, y + cellHeight*0.1, cellWidth*0.8, cellHeight*0.8);
 
                 }
 
@@ -297,6 +300,14 @@ public class MazeDisplay extends Canvas {
         }
     }
 
+    public double getZoomDeviationX() {
+        return zoomDeviationX;
+    }
+
+    public double getZoomDeviationY() {
+        return zoomDeviationY;
+    }
+
 
     public void moveZoom(Direction direction) {
         synchronized (zoomLock){
@@ -377,4 +388,10 @@ public class MazeDisplay extends Canvas {
         }
 
     }
+
+    public void mouseMove(MouseEvent mouseEvent) {
+        System.out.println("YOYOYOYOYOO");
+        }
+
+
 }
