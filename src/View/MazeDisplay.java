@@ -275,6 +275,14 @@ public class MazeDisplay extends Canvas {
         }
     }
 
+    public void setNewPokemon() {
+        String curr = imageFileNameFinish.getValue();
+        if(curr.contains("Charizard"))
+            this.imageFileNameFinish.set("./resources/images/Mewtwo.png");
+        if(curr.contains("Mewtwo"))
+            this.imageFileNameFinish.set("./resources/images/Pikachu.png");
+    }
+
     public void resize() {
         draw();
     }
@@ -392,6 +400,7 @@ public class MazeDisplay extends Canvas {
     public void mouseMove(MouseEvent mouseEvent) {
         System.out.println("YOYOYOYOYOO");
         }
+
 
 
 }

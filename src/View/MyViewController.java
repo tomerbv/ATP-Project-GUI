@@ -196,9 +196,11 @@ public class MyViewController implements Observer, Initializable, IView{
         alert.setHeaderText("Would you like to go for another or did you have enough?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
+            mazeDisplay.setNewPokemon();
             NewMaze(new ActionEvent());
             stage.close();
             mediaPlayer.stop();
+
         }
         else
             Exit();

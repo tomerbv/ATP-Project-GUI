@@ -109,7 +109,7 @@
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>
-                <MazeDisplay fx:id="mazeDisplay" height="770.0" width="820.0" imageFileNameLeft="./resources/images/Left.png" imageFileNameRight="./resources/images/Right.png" imageFileNameUp="./resources/images/Up.png" imageFileNameDown="./resources/images/Down.png" imageFileNameFinish="./resources/images/Pikachu.png" imageFileNameFloor="./resources/images/CaveFloor.png" imageFileNamePlayer="./resources/images/Avatar.jpg" imageFileNameWall="./resources/images/Wall1.png" onKeyPressed="#keyPressed" onMousePressed="#startDrag" onMouseDragged="#Drag" />
+                <MazeDisplay fx:id="mazeDisplay" height="770.0" width="820.0" imageFileNameLeft="./resources/images/Left.png" imageFileNameRight="./resources/images/Right.png" imageFileNameUp="./resources/images/Up.png" imageFileNameDown="./resources/images/Down.png" imageFileNameFinish="./resources/images/Charizard.png" imageFileNameFloor="./resources/images/CaveFloor.png" imageFileNamePlayer="./resources/images/Avatar.jpg" imageFileNameWall="./resources/images/Wall1.png" onKeyPressed="#keyPressed" onMousePressed="#startDrag" onMouseDragged="#Drag" />
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
