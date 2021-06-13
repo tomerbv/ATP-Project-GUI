@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="MyAnchor" maxHeight="400.0" maxWidth="700.0" minHeight="400.0" minWidth="700.0" stylesheets="/View/WinStyle.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.RulesController">
+<AnchorPane maxHeight="400.0" maxWidth="700.0" minHeight="400.0" minWidth="700.0" stylesheets="/View/WinStyle.css" >
     <children>
         <ImageView fitHeight="400.0" fitWidth="600.0" layoutY="-7.0" pickOnBounds="true" />
         <Label layoutX="100.0" layoutY="52.0" text="Rules of PokeMaze :" textFill="#aba024">
@@ -22,11 +22,11 @@
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>
-        <Label layoutX="14.0" layoutY="150.0" text="you can move towards the Pokemon using either your keyboard or your mouse">
+        <Label layoutX="14.0" layoutY="150.0" text="You can move using either your keyboard or your mouse">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>
-        <Label layoutX="14.0" layoutY="167.0" text="and you can only move on clear paths. get to Pokemon and see what happens ">
+        <Label layoutX="14.0" layoutY="167.0" text="You can only move on clear paths. get to Pokemon and see what happens ">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>

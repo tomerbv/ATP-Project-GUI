@@ -417,6 +417,7 @@ public class MyViewController implements Observer, Initializable, IView{
             Parent root = fxmlLoader.load(getClass().getResource("Settings.fxml").openStream());
 
             Scene scene = new Scene(root, 400, 350);
+            stage.setResizable(false);
             stage.setScene(scene);
 
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -468,7 +469,8 @@ public class MyViewController implements Observer, Initializable, IView{
             stage.setTitle("About");
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("About.fxml").openStream());
-            Scene scene = new Scene(root, 400, 350);
+            Scene scene = new Scene(root, 450, 350);
+            stage.setResizable(false);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
@@ -489,7 +491,8 @@ public class MyViewController implements Observer, Initializable, IView{
             stage.setTitle("Rules");
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("Rules.fxml").openStream());
-            Scene scene = new Scene(root, 400, 350);
+            Scene scene = new Scene(root, 450, 350);
+            stage.setResizable(false);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
