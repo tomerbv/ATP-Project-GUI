@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" stylesheets="/View/WinStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.SettingsController">
+<AnchorPane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" stylesheets="/View/WinStyle.css"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.SettingsController">
    <children>
       <Label layoutX="130.0" layoutY="36.0" text="Settings">
          <font>
@@ -18,7 +18,7 @@
       <Label layoutX="28.0" layoutY="164.0" prefHeight="17.0" prefWidth="203.0" text="Pick the Algorithm to Solve the Maze :" />
       <Label layoutX="29.0" layoutY="208.0" text="pick the number of threads you want :" />
       <TextField fx:id="textfield_numofthreads" layoutX="247.0" layoutY="204.0" prefHeight="25.0" prefWidth="57.0" />
-      <MenuButton fx:id="PickAlgorithm" layoutX="240.0" layoutY="160.0" mnemonicParsing="false" text="Searching Algoithm">
+      <MenuButton fx:id="PickAlgorithm" layoutX="240.0" layoutY="160.0" mnemonicParsing="false" text="Searching Algorithm">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#ChangeToBestFirst" text="BestFirstSearch" />
           <MenuItem mnemonicParsing="false" onAction="#ChangeToBreadthFirst" text="BreadthFisrtSearch" />

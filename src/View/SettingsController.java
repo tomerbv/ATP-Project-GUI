@@ -68,7 +68,8 @@ public class SettingsController implements Initializable, Observer {
                 throwInfoAlert("only numbers are accepted");
             }
         }
-        viewModel.SetConfigurations(numofthreads,SearchingAlgo);
+        Configurations.setProp(Integer.valueOf(numofthreads),"MyMazeGenerator",SearchingAlgo);
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("Settings have been changes , returning to Game");
         alert.show();

@@ -62,8 +62,8 @@ public class MyViewModel extends Observable implements Observer {
         model.LoadMaze(maze);
     }
 
-    public void Exit() {
-        model.Exit();
+    public void stopServers() {
+        model.stopServers();
     }
 
     public void load(Maze loadedMaze) {
@@ -75,7 +75,8 @@ public class MyViewModel extends Observable implements Observer {
     public String[] getConfigurations() {
         return model.getConfigurations();
     }
-    public void SetConfigurations(String numofthreads, String searchingAlgo) {
-        model.setConfigurations(numofthreads,searchingAlgo);
+
+    public void startServers() {
+        model.startServers();
     }
 }

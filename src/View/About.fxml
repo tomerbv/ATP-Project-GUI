@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" stylesheets="/View/WinStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AboutController">
+<AnchorPane maxHeight="400.0" maxWidth="700.0" minHeight="400.0" minWidth="700.0" stylesheets="/View/WinStyle.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AboutController">
     <children>
         <ImageView fitHeight="400.0" fitWidth="600.0" layoutY="-7.0" pickOnBounds="true" />
       <Label layoutX="75" layoutY="51.0" text="Welcome to PokeMaze !" textFill="#aba024">
@@ -24,7 +24,7 @@
             <Font name="System Bold Italic" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="255.0" text="PokeMaze was created by Tomer Weizman and Omer Maimon">
+      <Label layoutX="14.0" layoutY="255.0" text="PokeMaze was created by Tomer Weitzman and Omer Maimon.">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>
@@ -32,15 +32,11 @@
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>
-      <Label layoutX="14.0" layoutY="289.0" text="but this is pretty much the closest we van reach to the real game">
+      <Label layoutX="14.0" layoutY="289.0" text="but until we will have enough free time to develop pokemon battles">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>
-      <Label layoutX="14.0" layoutY="306.0" text="so we have a long way to go....">
-         <font>
-            <Font name="System Bold Italic" size="12.0" />
-         </font></Label>
-      <Label layoutX="14.0" layoutY="323.0" text="But remember the name PokeMaze because this is just the Start !">
+      <Label layoutX="14.0" layoutY="306.0" text="we decided to use the opportunity and create this legendary PokeMaze! ">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>
@@ -48,7 +44,7 @@
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>
-      <Label layoutX="14.0" layoutY="150.0" text="The Maze can be solved by three different searching algorithms:">
+      <Label layoutX="14.0" layoutY="150.0" text="and if you wish, it can be solved by three different searching algorithms:">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>

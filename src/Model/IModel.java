@@ -18,9 +18,9 @@ public interface IModel {
     void solveMaze();
     Solution getSolution();
     void LoadMaze(Maze maze);
-    void Exit();
 
     String[] getConfigurations();
 
-    void setConfigurations(String numofthreads, String searchingAlgo);
+    void startServers();
+    void stopServers();
 }

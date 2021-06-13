@@ -23,7 +23,6 @@ public class MyModel extends Observable implements IModel{
     private int characterRowPos, characterColPos;
     private Solution solution;
     private Server generateMazeServer, solveMazeServer;
-    private ExecutorService threadPool;
 
 
 
@@ -34,17 +33,17 @@ public class MyModel extends Observable implements IModel{
         solveMazeServer = new Server(5401,1000, new ServerStrategySolveSearchProblem());
         generateMazeServer.start();
         solveMazeServer.start();
-        threadPool = Executors.newCachedThreadPool();
-        Configurations config = Configurations.getInstance();
-
-
 
     }
     
-    public void Exit(){
+    public void stopServers(){
         generateMazeServer.stop();
         solveMazeServer.stop();
-        threadPool.shutdown();
+    }
+
+    public void startServers(){
+        generateMazeServer.start();
+        solveMazeServer.start();
     }
 
     @Override
@@ -52,14 +51,9 @@ public class MyModel extends Observable implements IModel{
         String[] configurations = new String[2];
         configurations[0] = String.valueOf(Configurations.getThreadPoolSize());
         configurations[1] = Configurations.getMazeSearchingAlgorithm().getName();
-
         return configurations;
     }
 
-    @Override
-    public void setConfigurations(String numofthreads, String searchingAlgo) {
-        Configurations.setProp(Integer.valueOf(numofthreads),"MyMazeGeneratror",searchingAlgo);
-    }
 
 
     @Override
@@ -76,11 +70,12 @@ public class MyModel extends Observable implements IModel{
                         toServer.writeObject(mazeDimensions);
                         toServer.flush();
                         byte[] compressedMaze = (byte[])fromServer.readObject();
-                        InputStream is = new MyDecompressorInputStream(new ByteArrayInputStream(compressedMaze));
+                        InputStream inputstream = new MyDecompressorInputStream(new ByteArrayInputStream(compressedMaze));
                         byte[] decompressedMaze = new byte[mazeDimensions[0]*mazeDimensions[1]+6];
-                        is.read(decompressedMaze);
+                        inputstream.read(decompressedMaze);
                         setMaze(new Maze(decompressedMaze));
-                        //maze.print();
+                        toServer.close();
+                        fromServer.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -187,6 +182,8 @@ public class MyModel extends Observable implements IModel{
                         toServer.writeObject(maze);
                         toServer.flush();
                         setSolution((Solution) fromServer.readObject());
+                        toServer.close();
+                        fromServer.close();
                     } catch (Exception var10) {
                         var10.printStackTrace();
                     }

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="MyAnchor" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" stylesheets="/View/WinStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.RulesController">
+<AnchorPane fx:id="MyAnchor" maxHeight="400.0" maxWidth="700.0" minHeight="400.0" minWidth="700.0" stylesheets="/View/WinStyle.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.RulesController">
     <children>
         <ImageView fitHeight="400.0" fitWidth="600.0" layoutY="-7.0" pickOnBounds="true" />
         <Label layoutX="100.0" layoutY="52.0" text="Rules of PokeMaze :" textFill="#aba024">
@@ -18,15 +18,15 @@
                 <Font name="System Bold" size="16.0" />
             </font>
         </Label>
-        <Label layoutX="14.0" layoutY="133.0" text="The goal of PokeMaze is to reach Mu ">
+        <Label layoutX="14.0" layoutY="133.0" text="The goal of PokeMaze is to catch em all! (all 3 in this case)">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>
-        <Label layoutX="14.0" layoutY="150.0" text="you can move using either your keyboard or your mouse">
+        <Label layoutX="14.0" layoutY="150.0" text="you can move towards the Pokemon using either your keyboard or your mouse">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>
-        <Label layoutX="14.0" layoutY="167.0" text="the only way to move is on clear paths">
+        <Label layoutX="14.0" layoutY="167.0" text="and you can only move on clear paths. get to Pokemon and see what happens ">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>
@@ -47,7 +47,7 @@
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>
-      <Label layoutX="16.0" layoutY="252.0" text="Click on Properties to define the size of the maze as well as other settings ">
+      <Label layoutX="16.0" layoutY="252.0" text="Click on Properties to define settings ">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>

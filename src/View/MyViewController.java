@@ -455,7 +455,7 @@ public class MyViewController implements Observer, Initializable, IView{
         alert.setHeaderText("Are you sure?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
-            viewModel.Exit();
+            viewModel.stopServers();
             System.exit(0);
         }
         menuLocker = false;
