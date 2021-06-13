@@ -48,7 +48,9 @@ public class MyViewController implements Observer, Initializable, IView{
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
     public MediaPlayer WinmediaPlayer;
-    private MazeDisplay mazeDisplayer;
+    public MediaPlayer MovemediaPlayer;
+
+
 
 
 
@@ -153,11 +155,16 @@ public class MyViewController implements Observer, Initializable, IView{
     }
 
     private void playMoveSound() {
-        Media sound = new Media(this.getClass().getResource("/music/movesound.wav").toString());
-        //Media sound = new Media(new File(musicFile).toURI().toString());
-        MediaPlayer mediaPlayer= new MediaPlayer(sound);
-        mediaPlayer.setVolume(0.2);
-        mediaPlayer.play();
+        try {
+            Media sound = new Media(this.getClass().getResource("/music/movesound.wav").toString());
+            //Media sound = new Media(new File(musicFile).toURI().toString());
+            MovemediaPlayer = new MediaPlayer(sound);
+            MovemediaPlayer.setVolume(0.2);
+            MovemediaPlayer.play();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -167,9 +174,9 @@ public class MyViewController implements Observer, Initializable, IView{
             if(!(mediaPlayer == null))
                 mediaPlayer.stop();
             Media sound = new Media(this.getClass().getResource("/music/CatVibing.mp3").toString());
-            mediaPlayer = new MediaPlayer(sound);
-            mediaPlayer.setVolume(0.2);
-            mediaPlayer.play();
+            WinmediaPlayer = new MediaPlayer(sound);
+            WinmediaPlayer.setVolume(0.2);
+            WinmediaPlayer.play();
             YouWin();
         }
         mazeDisplay.setPlayerPosition(row, col);
@@ -208,7 +215,9 @@ public class MyViewController implements Observer, Initializable, IView{
             mazeDisplay.setNewPokemon();
             NewMaze(new ActionEvent());
             stage.close();
-            mediaPlayer.stop();
+            if(mediaPlayer!=null) {
+                mediaPlayer.stop();
+            }
 
         }
         else
@@ -504,9 +513,7 @@ public class MyViewController implements Observer, Initializable, IView{
         musicThread = new Thread(()-> {
             try {
                 while (!stop) {
-                    //String musicFile = "resources/Sounds/theme.mp3";
                     Media sound = new Media(this.getClass().getResource("/music/pokemon.mp3").toString());
-                    //Media sound = new Media(new File(musicFile).toURI().toString());
                     mediaPlayer = new MediaPlayer(sound);
                     mediaPlayer.setVolume(0.2);
                     mediaPlayer.play();

@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import View.*?>
 
-<BorderPane onMouseClicked="#mouseClicked" onScroll="#Scrolled" prefHeight="408.0" prefWidth="594.0" stylesheets="@MazeStyle.css"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
+<BorderPane onMouseClicked="#mouseClicked" onScroll="#Scrolled" prefHeight="408.0" prefWidth="594.0" stylesheets="@MazeStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
     <left>
         <VBox prefHeight="200.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
             <children>

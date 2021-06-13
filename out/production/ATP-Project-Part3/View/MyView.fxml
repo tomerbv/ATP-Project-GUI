@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import View.*?>
 
-<BorderPane onMouseClicked="#mouseClicked" onScroll="#Scrolled" prefHeight="408.0" prefWidth="594.0" stylesheets="@MazeStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
+<BorderPane onMouseClicked="#mouseClicked" onScroll="#Scrolled" prefHeight="408.0" prefWidth="594.0" stylesheets="@MazeStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
     <left>
         <VBox prefHeight="200.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
@@ -109,7 +109,7 @@
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>
-                <MazeDisplay fx:id="mazeDisplay" height="770.0" width="820.0" imageFileNameLeft="./resources/images/Left.png" imageFileNameRight="./resources/images/Right.png" imageFileNameUp="./resources/images/Up.png" imageFileNameDown="./resources/images/Down.png" imageFileNameFinish="./resources/images/Mu.png" imageFileNameFloor="./resources/images/CaveFloor.png" imageFileNamePlayer="./resources/images/Avatar.jpg" imageFileNameWall="./resources/images/Wall1.png" onKeyPressed="#keyPressed"  />
+                <MazeDisplay fx:id="mazeDisplay" height="770.0" width="820.0" imageFileNameLeft="./resources/images/Left.png" imageFileNameRight="./resources/images/Right.png" imageFileNameUp="./resources/images/Up.png" imageFileNameDown="./resources/images/Down.png" imageFileNameFinish="./resources/images/Charizard.png" imageFileNameFloor="./resources/images/CaveFloor.png" imageFileNamePlayer="./resources/images/Avatar.jpg" imageFileNameWall="./resources/images/Wall1.png" onKeyPressed="#keyPressed" onMousePressed="#startDrag" onMouseDragged="#Drag" />
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

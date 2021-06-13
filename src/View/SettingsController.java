@@ -78,17 +78,6 @@ public class SettingsController implements Initializable, Observer {
     }
 
 
-    private void Exit() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Exit");
-        alert.setHeaderText("Are you sure?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            viewModel.Exit();
-            System.exit(0);
-        }
-    }
-
 
     public void SetConfigurations(String[] configuriations) {
         PickAlgorithm.setText(configuriations[0]);
