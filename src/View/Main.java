@@ -25,7 +25,6 @@ public class Main extends Application {
         Scene scene = new Scene(root, 1000, 800);
         primaryStage.setScene(scene);
         IModel model = new MyModel();
-        model.Start();
         MyViewModel viewModel = new MyViewModel(model);
         MyViewController myViewControl = fxmlLoader.getController();
         myViewControl.setViewModel(viewModel);
