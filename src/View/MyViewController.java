@@ -305,10 +305,7 @@ public class MyViewController implements Observer, Initializable, IView{
     public void update(Observable o, Object arg) {
         String change = (String) arg;
         switch (change){
-            case "Generated" ->{
-                mazeGenerated();
-                playerMoved();
-            }
+            case "Generated" -> mazeGenerated();
             case "Moved" -> playerMoved();
             case "Solved" -> mazeSolved();
             default -> System.out.println("Not implemented change: " + change);
