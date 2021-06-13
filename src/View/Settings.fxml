@@ -8,17 +8,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" style="-fx-background-color: bisque;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.SettingsController">
+<AnchorPane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" stylesheets="/View/WinStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.SettingsController">
    <children>
-      <Label layoutX="213.0" layoutY="30.0" text="Settings">
+      <Label layoutX="130.0" layoutY="36.0" text="Settings">
          <font>
             <Font name="System Bold Italic" size="36.0" />
          </font>
       </Label>
-      <Label layoutX="26.0" layoutY="97.0" text="Enter the number of rows wanted in the Maze :" />
-      <Label layoutX="26.0" layoutY="131.0" text="Enter the number of columns in the Maze :" />
-      <TextField fx:id="textField_mazeRows" layoutX="281.0" layoutY="93.0" prefHeight="25.0" prefWidth="67.0" />
-      <TextField fx:id="textField_mazeColumns" layoutX="256.0" layoutY="127.0" prefHeight="25.0" prefWidth="67.0" />
       <Label layoutX="28.0" layoutY="164.0" prefHeight="17.0" prefWidth="203.0" text="Pick the Algorithm to Solve the Maze :" />
       <Label layoutX="29.0" layoutY="208.0" text="pick the number of threads you want :" />
       <TextField fx:id="textfield_numofthreads" layoutX="247.0" layoutY="204.0" prefHeight="25.0" prefWidth="57.0" />
@@ -29,6 +25,14 @@
             <MenuItem mnemonicParsing="false" onAction="#ChangeToDepthFirst" text="DepthFirstSearch" />
         </items>
       </MenuButton>
-      <Button layoutX="210.0" layoutY="291.0" mnemonicParsing="false" onAction="#SaveSettings" prefHeight="25.0" prefWidth="113.0" text=" Save Settings" />
+      <Button layoutX="85.0" layoutY="273.0" mnemonicParsing="false" onAction="#SaveSettings" prefHeight="25.0" prefWidth="113.0" text=" Save Settings" />
+      <Button layoutX="278.0" layoutY="273.0" mnemonicParsing="false" onAction="#CancelButton" prefHeight="25.0" prefWidth="78.0" text="Cancel" />
+      <Label layoutX="29.0" layoutY="125.0" text="Pick the Algorithm to Generate the Maze : " />
+      <MenuButton fx:id="PickGenerator" layoutX="268.0" layoutY="121.0" mnemonicParsing="false" text="Generating Algorithm">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#CHangeToSimpleMazeGenerator" text="SimpleMazeGenerator" />
+          <MenuItem f mnemonicParsing="false" onAction="#ChangeToMyMazeGenerator" text="MyMazeGenerator" />
+        </items>
+      </MenuButton>
    </children>
 </AnchorPane>

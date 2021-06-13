@@ -47,8 +47,8 @@ public class MyViewController implements Observer, Initializable, IView{
 
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
-    public MediaPlayer WinmediaPlayer;
-    private MazeDisplay mazeDisplayer;
+
+
 
 
 
@@ -422,9 +422,10 @@ public class MyViewController implements Observer, Initializable, IView{
             stage.initModality(Modality.APPLICATION_MODAL);
             if(mediaPlayer!=null)
                 mediaPlayer.stop();
-            String[] configuriations = new String[2];
-            configuriations=viewModel.getConfigurations();
+            String[] configuriations = new String[3];
+            configuriations = viewModel.getConfigurations();
             SettingsController propertiescontroller = fxmlLoader.getController();
+            propertiescontroller.setViewModel(this.viewModel);
             propertiescontroller.SetConfigurations(configuriations);
 
 

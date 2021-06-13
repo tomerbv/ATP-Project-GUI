@@ -6,10 +6,8 @@ import ViewModel.MyViewModel;
 import algorithms.search.ASearchingAlgorithm;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.Observable;
@@ -19,6 +17,8 @@ import java.util.ResourceBundle;
 public class SettingsController implements Initializable, Observer {
     public TextField textfield_numofthreads;
     public MenuButton PickAlgorithm;
+    public MenuButton PickGenerator;
+    public MyViewModel viewModel;
 
 
 
@@ -30,6 +30,10 @@ public class SettingsController implements Initializable, Observer {
     @Override
     public void update(Observable o, Object arg) {
 
+    }
+    public void setViewModel(MyViewModel viewModel) {
+        this.viewModel = viewModel;
+        this.viewModel.addObserver(this);
     }
 
     public void ChangeToBestFirst(ActionEvent actionEvent) {
@@ -43,12 +47,55 @@ public class SettingsController implements Initializable, Observer {
     public void ChangeToDepthFirst(ActionEvent actionEvent) {
         PickAlgorithm.setText("DepthFirstSearch");
     }
+    private void throwInfoAlert(String text){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(text);
+        alert.show();
+    }
 
     public void SaveSettings(ActionEvent actionEvent) {
+        String numofthreads = textfield_numofthreads.getText();
+        String SearchingAlgo = PickAlgorithm.getText();
+        String GenratingAlgo = PickGenerator.getText();
+        int threads;
+        if(!numofthreads.isEmpty()) {
+            try {
+                threads = Integer.parseInt(numofthreads);
+                if (threads < 1) {
+                    throwInfoAlert("number of threads must be at least 1");
+                }
+
+
+            } catch (Exception e) {
+                throwInfoAlert("only numbers are accepted");
+            }
+        }
+        viewModel.SetConfigurations(numofthreads,SearchingAlgo,GenratingAlgo);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("Settings have been changes , returning to Game");
+        alert.show();
+        Stage stage = (Stage) this.PickAlgorithm.getScene().getWindow();
+        stage.close();
+
     }
 
     public void SetConfigurations(String[] configuriations) {
-        PickAlgorithm.setText(configuriations[0]);
-        textfield_numofthreads.setText(configuriations[1]);
+        PickAlgorithm.setText(configuriations[1]);
+        textfield_numofthreads.setText(configuriations[0]);
+        PickGenerator.setText(configuriations[2]);
+    }
+
+    public void CancelButton(ActionEvent actionEvent) {
+        throwInfoAlert("Settings have not been saved , returning to Game;");
+        Stage stage = (Stage) this.PickAlgorithm.getScene().getWindow();
+        stage.close();
+    }
+
+    public void CHangeToSimpleMazeGenerator(ActionEvent actionEvent) {
+        PickGenerator.setText("SimpleMazeGenerator");
+    }
+
+    public void ChangeToMyMazeGenerator(ActionEvent actionEvent) {
+        PickGenerator.setText("MyMazeGenerator");
     }
 }
