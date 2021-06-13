@@ -17,7 +17,6 @@ import java.util.ResourceBundle;
 public class SettingsController implements Initializable, Observer {
     public TextField textfield_numofthreads;
     public MenuButton PickAlgorithm;
-    public MenuButton PickGenerator;
     public MyViewModel viewModel;
 
 
@@ -56,7 +55,6 @@ public class SettingsController implements Initializable, Observer {
     public void SaveSettings(ActionEvent actionEvent) {
         String numofthreads = textfield_numofthreads.getText();
         String SearchingAlgo = PickAlgorithm.getText();
-        String GenratingAlgo = PickGenerator.getText();
         int threads;
         if(!numofthreads.isEmpty()) {
             try {
@@ -70,7 +68,7 @@ public class SettingsController implements Initializable, Observer {
                 throwInfoAlert("only numbers are accepted");
             }
         }
-        viewModel.SetConfigurations(numofthreads,SearchingAlgo,GenratingAlgo);
+        viewModel.SetConfigurations(numofthreads,SearchingAlgo);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("Settings have been changes , returning to Game");
         alert.show();
@@ -82,7 +80,7 @@ public class SettingsController implements Initializable, Observer {
     public void SetConfigurations(String[] configuriations) {
         PickAlgorithm.setText(configuriations[1]);
         textfield_numofthreads.setText(configuriations[0]);
-        PickGenerator.setText(configuriations[2]);
+
     }
 
     public void CancelButton(ActionEvent actionEvent) {
@@ -91,11 +89,5 @@ public class SettingsController implements Initializable, Observer {
         stage.close();
     }
 
-    public void CHangeToSimpleMazeGenerator(ActionEvent actionEvent) {
-        PickGenerator.setText("SimpleMazeGenerator");
-    }
 
-    public void ChangeToMyMazeGenerator(ActionEvent actionEvent) {
-        PickGenerator.setText("MyMazeGenerator");
-    }
 }

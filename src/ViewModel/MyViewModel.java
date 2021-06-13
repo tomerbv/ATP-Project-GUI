@@ -75,7 +75,7 @@ public class MyViewModel extends Observable implements Observer {
     public String[] getConfigurations() {
         return model.getConfigurations();
     }
-    public void SetConfigurations(String numofthreads, String searchingAlgo, String generatingAlgo) {
-        model.setConfigurations(numofthreads,searchingAlgo,generatingAlgo);
+    public void SetConfigurations(String numofthreads, String searchingAlgo) {
+        model.setConfigurations(numofthreads,searchingAlgo);
     }
 }

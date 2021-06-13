@@ -422,7 +422,7 @@ public class MyViewController implements Observer, Initializable, IView{
             stage.initModality(Modality.APPLICATION_MODAL);
             if(mediaPlayer!=null)
                 mediaPlayer.stop();
-            String[] configuriations = new String[3];
+            String[] configuriations = new String[2];
             configuriations = viewModel.getConfigurations();
             SettingsController propertiescontroller = fxmlLoader.getController();
             propertiescontroller.setViewModel(this.viewModel);
@@ -432,6 +432,7 @@ public class MyViewController implements Observer, Initializable, IView{
             stage.show();
         }
         catch (Exception e){
+            e.printStackTrace();
             throwInfoAlert("could not open Settings scene");
         }
         menuLocker = false;

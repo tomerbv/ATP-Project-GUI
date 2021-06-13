@@ -27,12 +27,5 @@
       </MenuButton>
       <Button layoutX="85.0" layoutY="273.0" mnemonicParsing="false" onAction="#SaveSettings" prefHeight="25.0" prefWidth="113.0" text=" Save Settings" />
       <Button layoutX="278.0" layoutY="273.0" mnemonicParsing="false" onAction="#CancelButton" prefHeight="25.0" prefWidth="78.0" text="Cancel" />
-      <Label layoutX="29.0" layoutY="125.0" text="Pick the Algorithm to Generate the Maze : " />
-      <MenuButton fx:id="PickGenerator" layoutX="268.0" layoutY="121.0" mnemonicParsing="false" text="Generating Algorithm">
-        <items>
-          <MenuItem mnemonicParsing="false" onAction="#CHangeToSimpleMazeGenerator" text="SimpleMazeGenerator" />
-          <MenuItem f mnemonicParsing="false" onAction="#ChangeToMyMazeGenerator" text="MyMazeGenerator" />
-        </items>
-      </MenuButton>
    </children>
 </AnchorPane>

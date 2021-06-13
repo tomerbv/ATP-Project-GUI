@@ -22,5 +22,5 @@ public interface IModel {
 
     String[] getConfigurations();
 
-    void setConfigurations(String numofthreads, String searchingAlgo, String generatingAlgo);
+    void setConfigurations(String numofthreads, String searchingAlgo);
 }

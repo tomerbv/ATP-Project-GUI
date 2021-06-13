@@ -49,16 +49,16 @@ public class MyModel extends Observable implements IModel{
 
     @Override
     public String[] getConfigurations() {
-        String[] configurations = new String[3];
+        String[] configurations = new String[2];
         configurations[0] = String.valueOf(Configurations.getThreadPoolSize());
         configurations[1] = Configurations.getMazeSearchingAlgorithm().getName();
-        configurations[2] = Configurations.getMazeGeneratingAlgorithm().getClass().getName();
+
         return configurations;
     }
 
     @Override
-    public void setConfigurations(String numofthreads, String searchingAlgo,String generatingAlgo) {
-        Configurations.setProp(Integer.valueOf(numofthreads),searchingAlgo,generatingAlgo);
+    public void setConfigurations(String numofthreads, String searchingAlgo) {
+        Configurations.setProp(Integer.valueOf(numofthreads),"MyMazeGeneratror",searchingAlgo);
     }
 
 
