@@ -1,7 +1,7 @@
 # ATP-Project-GUI
 Implementation of the GUI part of the Maze Game for ATP course in SISE department of BGU University.
 
-General Information
+[General Information]
 This final part of the project is to train my skills in creating a fully working game with GUI using JavaFX and an MVVM architecture to separate the view from the business logic.
 
 Business logic for creating and solving mazes using a multi-threaded version of client-server is implemented here: @ATP-Project
